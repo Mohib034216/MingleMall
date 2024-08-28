@@ -1,0 +1,31 @@
+.cart-summary-content{
+width: 30vw;
+font: 1em sans-serif;
+line-height: 4vw;
+
+}
+.cart-subtotal{
+    display: flex;
+    gap: 18vw;
+}
+.cart-shipping{
+    display:flex ;
+    gap: 18vw;
+
+}
+.cart-total{
+    display:flex ;
+    line-height: 6vw;
+    gap: 21vw;
+
+}
+.checkout-btn button{
+    width: 10vw;
+    height: 3vw;
+    color: var(--white);
+    background-color: var(--dark);
+    cursor: pointer;
+    &:hover{
+        background-color: #000000c1;
+    }
+}

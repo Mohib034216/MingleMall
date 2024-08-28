@@ -1,0 +1,10 @@
+body {
+  background-color: var(--dark-white);
+  
+  font-family: var(--font-family-s1);
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
