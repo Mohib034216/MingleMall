@@ -18,10 +18,15 @@ function Productcard(props) {
                 <Link to={`/product/${products.id}`}>{products.title.length > 20 && `${products.title.slice(0, 17)}...`}</Link>
             </div>
             <div className="product-prices">
-                <h5>${((products.price)-(products.price*products.discountPercentage)/100).toFixed(2)}</h5> <del>${products.price}</del>
+                {/* <h5>${((products.price)-(products.price*products.discountPercentage)/100).toFixed(2)}</h5> <del>${products.price}</del> */}
+                <h5>${products.price.toFixed(2)}</h5> <del>${}</del>
             </div>
             <div className="product-star">
-                <StarRating value={products.rating.rate} text={products.rating.rate} />
+            {products.review.map((review) => (
+                    <StarRating value={review.rating} text={review.rating} />
+            
+            ))}
+            
             </div>
         </div>
       

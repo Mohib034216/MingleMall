@@ -2,20 +2,27 @@ from django.db import models
 from mptt.models import MPTTModel, TreeForeignKey
 from tinymce import models as tiny_models
 from django.utils.safestring import mark_safe
+from user.models import User
 # Create your models here.
 
 class Category(MPTTModel):
     title = models.CharField(max_length=50, unique=True)
     parent = TreeForeignKey('self', on_delete=models.CASCADE, null=True, blank=True, related_name='children')
 
+    def __str__(self):
+        return self.title
+    
     class MPTTMeta:
          order_insertion_by = ['title']
 
 
+
 class Product(models.Model):
-    title = models.CharField( max_length=50)
+    category = models.ForeignKey(Category, on_delete=models.CASCADE)
+    title = models.CharField(max_length=50)
     thumbnail = models.ImageField(upload_to='upload/', height_field=None, width_field=None, max_length=None)
     description = tiny_models.HTMLField()
+    price   =  models.IntegerField()
     slug = models.SlugField(unique=True)
     is_active   = models.BooleanField(default=False)
     created_at = models.DateTimeField( auto_now_add=True)
@@ -66,7 +73,7 @@ class AttributeValues(models.Model):
 
 class Variants(models.Model):
     title = models.CharField(max_length=50)
-    product = models.ForeignKey("Product",  on_delete=models.CASCADE)
+    product = models.ForeignKey(Product, related_name='variants', on_delete=models.CASCADE)
     # attribute_values = models.ForeignKey("AttributeValues",  on_delete=models.CASCADE)
     stock =  models.PositiveIntegerField()
     sku = models.CharField(max_length=100, unique=True)
@@ -80,16 +87,46 @@ class Variants(models.Model):
         return f"{self.product.title}-{self.title}"
 
 class ProductAttributeDetail(models.Model):
-    variant = models.ForeignKey("Variants",on_delete=models.CASCADE)
+    variant = models.ForeignKey(Variants,on_delete=models.CASCADE)
     attribute = models.ForeignKey("AttributeValues",on_delete=models.CASCADE)
     is_active   = models.BooleanField(default=False)
    
 
+
+class ProductReview(models.Model):
+    STATUS_CHOICES = [
+        ('approved', 'Approved'),
+        ('pending', 'Pending'),
+        ('rejected', 'Rejected'),
+    ]
     
+    rating = models.PositiveIntegerField(default=0)
+    customer = models.ForeignKey(User, related_name='userreview',on_delete=models.CASCADE )
+    product = models.ForeignKey(Product,related_name="productview", on_delete=models.CASCADE)
+    description = models.CharField(max_length=200,default='review')
+    helpful_votes = models.IntegerField(null=True,blank=True)
+    status = models.CharField(choices=STATUS_CHOICES, max_length=10,default='pending')
+    image = models.ImageField(upload_to='Reviews/upload',null=True,blank=True) 
+
+
+    def __str__(self):
+        return self.product.title
+    
+
 
 class ProductGallery(models.Model):
     title = models.CharField( max_length=50)  
-    product = models.ForeignKey("Product",null=True,blank=True, on_delete=models.CASCADE)
-    Variants = models.ForeignKey("Variants",null=True,blank=True, on_delete=models.CASCADE)
+    product = models.ForeignKey(Product,null=True,blank=True, on_delete=models.CASCADE)
+    variants = models.ForeignKey(Variants,null=True,blank=True, on_delete=models.CASCADE)
+    image  = models.ImageField( upload_to='upload/',)
     created_at = models.DateTimeField( auto_now_add=True)
     updated_at = models.DateTimeField( auto_now=True)
+
+
+
+    def __str__(self):
+        return str(self.title)
+
+
+    def img(self):
+        return mark_safe(f"<img width='80' heigth='100' src={self.image.url}/>")

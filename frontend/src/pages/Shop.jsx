@@ -17,14 +17,15 @@ function Shop() {
   const [products, setProducts] = useState([])
 
   useEffect(()=>{
-    axios.get('https://fakestoreapi.com/products')
+    // axios.get('https://fakestoreapi.com/products')
+    axios.get('http://localhost:8000/products/')
   .then(response => {
     const productList = response.data.map(product => ({
       id: product.id,
       title: product.title,
       price: product.price,
-      image: product.image,
-      rating: product.rating,
+      image: product.thumbnail,
+      review: product.review,
     }));
     setProducts(productList);
 
