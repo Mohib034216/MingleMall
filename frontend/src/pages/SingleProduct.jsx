@@ -16,7 +16,7 @@ function SingleProduct() {
   const [qty,setQty] = useState(1);
   const [ProductList, setProductList] = useState([]);
   useEffect(() => {
-    axios(`https://fakestoreapi.com/products/${id}`).then((response) => 
+    axios(`http://localhost:8000/products/${id}`).then((response) => 
      {
 
        setProductList(response.data);
@@ -26,8 +26,8 @@ function SingleProduct() {
   const product = {
     id: ProductList?.id ,
     title: ProductList?.title,
-    image: ProductList?.image,
-    rating: ProductList?.rating,
+    image: ProductList?.thumbnail,
+    review: ProductList?.review,
     price: ProductList?.price,
     quantity: qty,
    
@@ -47,7 +47,7 @@ function SingleProduct() {
           <img
             width={"500vw"}
             height={"450vw"}
-            src={ProductList.image}
+            src={ProductList.thumbnail}
             alt=""
           />
           <div className="product-thumbnail">
@@ -88,17 +88,27 @@ function SingleProduct() {
           </div>
         </div>
         <div className="product-content">
-          <h1>{ProductList.title}</h1>
-          {ProductList?.rating &&  <StarRating value={ProductList?.rating.rate} text={ProductList?.rating.rate}/>
-          }
+          <h1>{ProductList?.title}</h1>
+
+          {ProductList?.review.map((review) => (
+                   review.rating && <StarRating value={review.rating} text={review.rating} />
+            
+            ))}
+          {/* {ProductList?.rating &&  <StarRating value={ProductList?.review} text={ProductList?.review}/>
+          } */}
           <div className="product-price">
             <span>${((ProductList.price)-(ProductList.price*ProductList.discountPercentage)/100).toFixed(2)}</span>
             <span>
-              <del>${ProductList.price}</del>
+              <del>${ProductList?.price}</del>
             </span>
           </div>
           <div className="product-short-description">
-            {ProductList.description}
+            
+          <div dangerouslySetInnerHTML={{ __html: ProductList?.description }} />
+                          
+
+            
+        
           </div>
           <div className="product-variation">
             <div className="product-color">
