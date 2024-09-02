@@ -8,10 +8,17 @@ class ProductReviewSerializer(serializers.ModelSerializer):
         model = ProductReview
         fields =  ['rating']
 
+class ProductAttributeDetailSerializer(serializers.ModelSerializer):
+    
+    class Meta:
+        model = ProductAttributeDetail
+        fields =  "__all__"
+
 class VariantsSerializer(serializers.ModelSerializer):
-   reviews   = ProductReviewSerializer(many=True, read_only=True)
+   productdetail = ProductAttributeDetailSerializer(many=True, read_only=True)
    class Meta:
         model = Variants
+        # fields =  "__all__"
         fields =  "__all__"
 
 
@@ -19,6 +26,7 @@ class CategorySerializer(serializers.ModelSerializer):
    class Meta:
         model = Category
         fields = "__all__"
+
 
 class ProductSerializer(serializers.ModelSerializer):
     category  = CategorySerializer()

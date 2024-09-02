@@ -90,8 +90,10 @@ function SingleProduct() {
         <div className="product-content">
           <h1>{ProductList?.title}</h1>
 
-          {ProductList?.review.map((review) => (
-                   review.rating && <StarRating value={review.rating} text={review.rating} />
+          {
+          ProductList?.review &&
+          ProductList?.review.map((review) => (
+                    <StarRating value={review.rating} text={review.rating} />
             
             ))}
           {/* {ProductList?.rating &&  <StarRating value={ProductList?.review} text={ProductList?.review}/>

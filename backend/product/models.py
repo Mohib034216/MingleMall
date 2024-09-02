@@ -88,7 +88,7 @@ class Variants(models.Model):
 
 class ProductAttributeDetail(models.Model):
     variant = models.ForeignKey(Variants,on_delete=models.CASCADE)
-    attribute = models.ForeignKey("AttributeValues",on_delete=models.CASCADE)
+    attribute = models.ForeignKey(AttributeValues,on_delete=models.CASCADE)
     is_active   = models.BooleanField(default=False)
    
 
