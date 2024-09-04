@@ -20,20 +20,33 @@ function Shop() {
     // axios.get('https://fakestoreapi.com/products')
     axios.get('http://localhost:8000/products/')
   .then(response => {
-    const productList = response.data.map(product => ({
-      id: product.id,
-      title: product.title,
-      price: product.price,
-      image: product.thumbnail,
-      review: product.review,
-    }));
-    setProducts(productList);
+    const productList =  response.data.map(
+      product => (
+        ({
+          id:product.id,
+          title: product.title,
+          price: product.price,
+          image: product.thumbnail,
+          review: product.review,
 
-  })
-  .catch(error => {
-    console.error(error);
-  });
-    // axios('https://dummyjson.com/products').then((response) => {setProducts(response.data.products);});
+             
+        })
+        
+      ))
+      setProducts(productList)
+      // const productList = response.data.map(product => ({
+        //   id: product.id,
+        //   title: product.title,
+        //   price: product.price,
+        //   image: product.thumbnail,
+        //   review: product.review,
+        // }));
+        // setProducts(productList);
+        
+      })
+      .catch(error => {
+        console.error(error);
+      });
     
 
    let handler = ()=>{
@@ -46,6 +59,8 @@ function Shop() {
   document.addEventListener("mousedown",handler)
     
   });
+  
+
 
 
   return (
@@ -120,7 +135,7 @@ function Shop() {
              {
               products.map((item,i)=>(
               <Productcard key={i} products={item} />
-
+                // console.log(item)
              ))}
               </div>
         </div>

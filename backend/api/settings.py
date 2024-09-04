@@ -38,8 +38,10 @@ INSTALLED_APPS = [
     'corsheaders',
     'mptt',
     'tinymce',
+    'tabbed_admin',
 
 ]
+TABBED_ADMIN_USE_JQUERY_UI = True
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

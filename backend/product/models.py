@@ -18,24 +18,36 @@ class Category(MPTTModel):
 
 
 class Product(models.Model):
-    category = models.ForeignKey(Category, on_delete=models.CASCADE)
-    title = models.CharField(max_length=50)
+    category = models.ManyToManyField(Category)
+    title = models.CharField(max_length=255)
     thumbnail = models.ImageField(upload_to='upload/', height_field=None, width_field=None, max_length=None)
-    description = tiny_models.HTMLField()
-    price   =  models.IntegerField()
-    slug = models.SlugField(unique=True)
-    is_active   = models.BooleanField(default=False)
+    description = tiny_models.HTMLField(blank=True, null=True)
+    short_description = models.TextField(blank=True, null=True)
+    sku = models.CharField(max_length=64, unique=True)
+    slug  = models.SlugField()
+    regular_price = models.DecimalField(max_digits=10, decimal_places=2)
+    sale_price = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
+    price = models.DecimalField(max_digits=10, decimal_places=2)
+    stock_quantity = models.IntegerField(default=0)
+    stock_status = models.CharField(max_length=20, choices=[('instock', 'In Stock'), ('outofstock', 'Out of Stock')])
+    manage_stock = models.BooleanField(default=True)
     created_at = models.DateTimeField( auto_now_add=True)
-    updated_at = models.DateTimeField( auto_now=True)
-
-
+    updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return self.title
 
+    def save(self, *args, **kwargs):
+        if not self.sale_price:
+            self.price = self.regular_price
+        else:
+            self.price = self.sale_price
+        super().save(*args, **kwargs)
+
     def img(self):
         return mark_safe(f"<img width='90' height='100' src={self.thumbnail.url}>")
-    
+
+
 
     """
             ATTRIBUTE MODEL e.g: Color, Size .etc
@@ -57,12 +69,15 @@ class Attributes(models.Model):
     """
 
 class AttributeValues(models.Model):
-    title     = models.CharField(max_length=50)
+    value     = models.CharField(max_length=50)
     thumnail  = models.CharField(max_length=50,null=True,blank=True)
-    attribute = models.ForeignKey("Attributes",  on_delete=models.CASCADE)
+    attribute = models.ForeignKey("Attributes",related_name="values", on_delete=models.CASCADE)
 
     def __str__(self):
-        return self.title
+        return self.value
+
+
+
 
 
 
@@ -72,24 +87,31 @@ class AttributeValues(models.Model):
 
 
 class Variants(models.Model):
-    title = models.CharField(max_length=50)
-    product = models.ForeignKey(Product, related_name='variants', on_delete=models.CASCADE)
-    # attribute_values = models.ForeignKey("AttributeValues",  on_delete=models.CASCADE)
-    stock =  models.PositiveIntegerField()
-    sku = models.CharField(max_length=100, unique=True)
-    price = models.FloatField()
-    slug = models.SlugField(unique=True)
+    attribute_values = models.ManyToManyField(AttributeValues, related_name='attribute_values', blank=True)
+    product = models.ForeignKey(Product, related_name='variations', on_delete=models.CASCADE)
+    variation_name = models.CharField(max_length=255)
+    sku = models.CharField(max_length=64, unique=True, blank=True, null=True)
+    regular_price = models.DecimalField(max_digits=10, decimal_places=2)
+    sale_price = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
+    price = models.DecimalField(max_digits=10, decimal_places=2)
+    stock_quantity = models.IntegerField(default=0)
+    stock_status = models.CharField(max_length=20, choices=[('instock', 'In Stock'), ('outofstock', 'Out of Stock')])
+    manage_stock = models.BooleanField(default=True)
     created_at = models.DateTimeField( auto_now_add=True)
-    updated_at = models.DateTimeField( auto_now=True)
-
+    updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return f"{self.product.title}-{self.title}"
+        return f"{self.product.title}-{self.variation_name}"
 
-class ProductAttributeDetail(models.Model):
-    variant = models.ForeignKey(Variants,on_delete=models.CASCADE)
-    attribute = models.ForeignKey(AttributeValues,on_delete=models.CASCADE)
-    is_active   = models.BooleanField(default=False)
+
+
+
+# class ProductAttributeDetail(models.Model):
+#     variant = models.ForeignKey(Variants,related_name="values",on_delete=models.CASCADE)
+#     attribute = models.ForeignKey(AttributeValues,on_delete=models.CASCADE)
+#     is_active   = models.BooleanField(default=False)
+#     products = models.ManyToManyField(ProductVariation, related_name='attribute_values', blank=True)
+
    
 
 
@@ -100,7 +122,7 @@ class ProductReview(models.Model):
         ('rejected', 'Rejected'),
     ]
     
-    rating = models.PositiveIntegerField(default=0)
+    rating = models.FloatField(null=True, blank=True)
     customer = models.ForeignKey(User, related_name='userreview',on_delete=models.CASCADE )
     product = models.ForeignKey(Product,related_name="productview", on_delete=models.CASCADE)
     description = models.CharField(max_length=200,default='review')

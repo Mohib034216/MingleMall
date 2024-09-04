@@ -15,11 +15,11 @@ function Productcard(props) {
             <Link to={`/product/${products.id}`}><img  src={products.image} alt=''/></Link>
             </div>
             <div className="product-title">
-                <Link to={`/product/${products.id}`}>{products.title.length > 20 && `${products.title.slice(0, 17)}...`}</Link>
+                <Link to={`/product/${products.id}`}>{products.title.length > 20 ? `${products.title.slice(0, 17)}...`: products.title }</Link>
             </div>
             <div className="product-prices">
                 {/* <h5>${((products.price)-(products.price*products.discountPercentage)/100).toFixed(2)}</h5> <del>${products.price}</del> */}
-                <h5>${products.price.toFixed(2)}</h5> <del>${}</del>
+                <h5>${products.price}</h5> <del>${}</del>
             </div>
             <div className="product-star">
             {products.review.map((review) => (

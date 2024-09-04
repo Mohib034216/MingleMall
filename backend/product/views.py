@@ -1,10 +1,9 @@
 from django.shortcuts import render
 from rest_framework import viewsets
-from .models import Category, Product, Attributes, AttributeValues, Variants, ProductAttributeDetail, ProductGallery
+from .models import Category, Product, Attributes, AttributeValues, Variants, ProductGallery
 from .serializers import (CategorySerializer, ProductSerializer, 
                           AttributesSerializer, AttributeValuesSerializer, 
-                          VariantsSerializer, ProductAttributeDetailSerializer,
-                          ProductGallerySerializer)
+                          VariantSerializer, ProductGallerySerializer)
 
 class CategoryViewSet(viewsets.ModelViewSet):
     queryset = Category.objects.all()
@@ -24,11 +23,11 @@ class AttributeValuesViewSet(viewsets.ModelViewSet):
 
 class VariantsViewSet(viewsets.ModelViewSet):
     queryset = Variants.objects.all()
-    serializer_class = VariantsSerializer
+    serializer_class = VariantSerializer
 
-class ProductAttributeDetailViewSet(viewsets.ModelViewSet):
-    queryset = ProductAttributeDetail.objects.all()
-    serializer_class = ProductAttributeDetailSerializer
+# class ProductAttributeDetailViewSet(viewsets.ModelViewSet):
+#     queryset = ProductAttributeDetail.objects.all()
+#     serializer_class = ProductAttributeDetailSerializer
 
 class ProductGalleryViewSet(viewsets.ModelViewSet):
     queryset = ProductGallery.objects.all()
