@@ -119,6 +119,80 @@ a{
   display: flex;
   gap: 4vw;
 }
+/* COLOR AND SIZE STYLING  */
+
+
+.product-container {
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 2vw 0vw;
+  /* border: 1px solid #ddd; */
+  /* border-radius: 10px; */
+  /* background-color: #f9f9f9; */
+}
+
+.product-container h1 {
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+.product-colors,
+.product-sizes {
+  margin-bottom: 1vw;
+}
+
+.color-options {
+  display: flex;
+  gap: 10px;
+}
+
+.color-swatch {
+  width: 2vw;
+  height: 2vw;
+  border-radius: 50%;
+  border: 2px solid transparent;
+  cursor: pointer;
+  transition: border 0.3s ease;
+}
+
+.color-swatch.selected {
+  border: 2px solid #fead88;
+}
+
+.size-options {
+  display: flex;
+  gap: 10px;
+}
+
+.size-button {
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  border: 1px solid #ddd;
+  background-color: #fff;
+  border-radius: 5px;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.size-button:hover {
+  background-color: #fead889f;
+  color: #fff;
+}
+
+.size-button.selected {
+  background-color: #fead88;
+  color: #fff;
+}
+
+.selected-options {
+  margin-top: 20px;
+  font-size: 16px;
+}
+
+.selected-options p {
+  margin: 5px 0;
+}
 
 
 /* STYLING FOR PRODUCT IMAGES */
@@ -341,3 +415,5 @@ a:hover {
 
 
 /* END STYLING FOR LOGIN/SIGNUP PAGE  */
+
+

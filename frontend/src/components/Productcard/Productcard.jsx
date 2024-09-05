@@ -22,8 +22,10 @@ function Productcard(props) {
                 <h5>${products.price}</h5> <del>${}</del>
             </div>
             <div className="product-star">
-            {products.review.map((review) => (
-                    <StarRating value={review.rating} text={review.rating} />
+            {
+            products.review.length > 0 && 
+            products.review.map((review) => (
+                 <StarRating value={review.rating} text={review.rating} />
             
             ))}
             

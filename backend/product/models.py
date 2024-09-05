@@ -103,7 +103,11 @@ class Variants(models.Model):
     def __str__(self):
         return f"{self.product.title}-{self.variation_name}"
 
+    
 
+
+
+    
 
 
 # class ProductAttributeDetail(models.Model):
@@ -122,9 +126,9 @@ class ProductReview(models.Model):
         ('rejected', 'Rejected'),
     ]
     
-    rating = models.FloatField(null=True, blank=True)
-    customer = models.ForeignKey(User, related_name='userreview',on_delete=models.CASCADE )
-    product = models.ForeignKey(Product,related_name="productview", on_delete=models.CASCADE)
+    rating = models.FloatField()
+    customer = models.ForeignKey(User,null=True, blank=True, related_name='userreview',on_delete=models.CASCADE )
+    product = models.ForeignKey(Product,related_name="productreview", on_delete=models.CASCADE)
     description = models.CharField(max_length=200,default='review')
     helpful_votes = models.IntegerField(null=True,blank=True)
     status = models.CharField(choices=STATUS_CHOICES, max_length=10,default='pending')

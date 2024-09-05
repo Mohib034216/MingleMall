@@ -15,12 +15,23 @@ function SingleProduct() {
   const  dispatch = useDispatch();
   const [qty,setQty] = useState(1);
   const [ProductList, setProductList] = useState([]);
+  const [colors, setColors] = useState([]);
+  const [sizes, setSizes] = useState([]);
+  const [selectedColor, setSelectedColor] = useState(null);
+  const [selectedSize, setSelectedSize] = useState(null);
+  const [filteredVariant, setFilteredVariant] = useState(null); // Store the matched variant
+
+
   useEffect(() => {
     axios(`http://localhost:8000/products/${id}`).then((response) => 
      {
 
        setProductList(response.data);
-    })
+       extractAttributes(response.data);  
+    
+    }).catch(error => {
+      console.error("There was an error fetching the product!", error);
+    });
   }, [id]);
   
   const product = {
@@ -32,16 +43,71 @@ function SingleProduct() {
     quantity: qty,
    
   };
-  // const handleUpdate = (qty) => {
+
+  const extractAttributes = (product) => {
+    const colorSet = new Set();
+    const sizeSet = new Set();
+
+    // Loop through product variations
+    product.variants.forEach(variant => {
+      variant.attribute_values.forEach(attr => {
+        if (attr.attribute_title === "Color") {
+          colorSet.add(attr.value);
+        } else if (attr.attribute_title === "Size") {
+          sizeSet.add(attr.value);
+        }
+      });
+    });
+
+    // Convert sets to arrays
+    setColors(Array.from(colorSet));
+    setSizes(Array.from(sizeSet));
+  };
+
+
+  const handleColorSelect = (color) => {
+    setSelectedColor(color);
+    filterVariants(color, selectedSize);
+  };
+
+  const handleSizeSelect = (size) => {
+    setSelectedSize(size);
+    filterVariants(selectedColor, size);
+  };
+ 
+  const filterVariants = (color, size) => {
+    // if (!ProductList) return;
+
+    // const matchedVariants = ProductList.variants.filter(variant => {
+    //   const colorMatch = color
+    //     ? variant.attribute_values.some(attr => attr.attribute_title === "Color" && attr.value === color)
+    //     : true;
+    //   const sizeMatch = size
+    //     ? variant.attribute_values.some(attr => attr.attribute_title === "Size" && attr.value === size)
+    //     : true;
+    //   return colorMatch && sizeMatch;
+    if (!color || !size || !ProductList) return;
+
+    const matchedVariant = ProductList.variants.filter(variant => {
+      const colorMatch = variant.attribute_values.some(attr => attr.attribute_title === "Color" && attr.value === color);
+      const sizeMatch = variant.attribute_values.some(attr => attr.attribute_title === "Size" && attr.value === size);
+      return colorMatch && sizeMatch;
   
-  //   setQty(qty)
-  //   dispatch(updateCart({id:id, qty:qty}))
+    }
   
-  // }
-  
+  );
+  setFilteredVariant(matchedVariant || null);
+   
+  };
+  if (!!filteredVariant){
+
+    console.log(filteredVariant);
+  }
+
   return (
     <>
       <Breadcrumb label={'Shop'} path={'/shop'}  current={`${ProductList.title}`} />
+      
       <div className="product-detail">
         <div className="product-images">
           <img
@@ -96,10 +162,9 @@ function SingleProduct() {
                     <StarRating value={review.rating} text={review.rating} />
             
             ))}
-          {/* {ProductList?.rating &&  <StarRating value={ProductList?.review} text={ProductList?.review}/>
-          } */}
+
           <div className="product-price">
-            <span>${((ProductList.price)-(ProductList.price*ProductList.discountPercentage)/100).toFixed(2)}</span>
+            <span>${(ProductList?.price)}</span>
             <span>
               <del>${ProductList?.price}</del>
             </span>
@@ -112,22 +177,50 @@ function SingleProduct() {
             
         
           </div>
-          <div className="product-variation">
-            <div className="product-color">
-              <h3>Colors:</h3>
-              <input  type="radio" id="red" name="color_variation" value="red" /> {" "}
-              <label htmlFor="red">Red</label>
-                <input  type="radio" id="blue" name="color_variation" value="blue" /> {" "}
-              <label htmlFor="blue">Blue</label>
+          <div className="product-container">  
+                      {/* Display colors */}
+                      <div className="product-colors">
+                        <h3>Choose Color:</h3>
+
+                        <div className="color-options">
+                          {colors.map((color, index) => (
+                            <div
+                              key={index}
+                              className={`color-swatch ${selectedColor === color ? 'selected' : ''}`}
+                              onClick={() => handleColorSelect(color)}
+                              style={{ backgroundColor: color.toLowerCase() }} // Color swatch style
+                            ></div>
+                          ))}
+                        </div>
+                         <div className="selected-options">
+                            <p>Selected Color: {selectedColor || 'None'}</p>
+                         </div>
+                      </div>
+
+                      {/* Display sizes */}
+                      <div className="product-sizes">
+                        <h3>Choose Size:</h3>
+                        <div className="size-options">
+                          {sizes.map((size, index) => (
+                            <button
+                              key={index}
+                              className={`size-button ${selectedSize === size ? 'selected' : ''}`}
+                              onClick={() => handleSizeSelect(size)}
+                            >
+                              {size}
+                            </button>
+                          ))}
+                          
+                        </div>
+                        <div className="selected-options">
+                        <p>Selected Size: {selectedSize || 'None'}</p>
+                      </div>
+                       
+                      </div>
+
+                   
             </div>
-            <div className="product-size">
-              <h3>Sizes:</h3>
-              <input  type="radio" id="XS" name="size_variation" value="XS" /> {" "}
-              <label htmlFor="XS">XS</label>
-                <input  type="radio" id="S" name="size_variation" value="S" /> {" "}
-              <label htmlFor="S">S</label>
-            </div>
-          </div>
+          
           <div className="product-add-cart">
             <ProductQty quantity={qty} setQuantity={setQty} />
             <button onClick={()=>{dispatch(addToCart(product))}} >Add To Cart <i className="fa fa-shopping-cart"></i>   </button>
@@ -144,11 +237,22 @@ function SingleProduct() {
             <span>
               <i className="fa fa-linkedin"></i>
             </span>
+              {/* Display selected variant data */}
+      {filteredVariant && (
+        <div className="variant-info">
+          <h3>Selected Variant:</h3>
+        
+          <p><strong>SKU:</strong> {filteredVariant[0].sku}</p>
+          <p><strong>Price:</strong> ${filteredVariant[0].price}</p>
+          <p><strong>Stock:</strong> {filteredVariant[0].stock_status === 'instock' ? 'In Stock' : 'Out of Stock'}</p>
+        </div>
+      )}  
           </div>
         </div>
       </div>
       <div className="product-brief-detail">
                   
+                 
       </div>
     </>
   );

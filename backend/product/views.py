@@ -1,9 +1,12 @@
 from django.shortcuts import render
 from rest_framework import viewsets
+from rest_framework.response import Response
+from rest_framework.decorators import action
 from .models import Category, Product, Attributes, AttributeValues, Variants, ProductGallery
-from .serializers import (CategorySerializer, ProductSerializer, 
-                          AttributesSerializer, AttributeValuesSerializer, 
-                          VariantSerializer, ProductGallerySerializer)
+# from .serializers import (CategorySerializer, ProductSerializer, 
+#                           AttributesSerializer, AttributeValuesSerializer, 
+#                           VariantSerializer, ProductGallerySerializer)
+from .serializers import *
 
 class CategoryViewSet(viewsets.ModelViewSet):
     queryset = Category.objects.all()
@@ -25,9 +28,25 @@ class VariantsViewSet(viewsets.ModelViewSet):
     queryset = Variants.objects.all()
     serializer_class = VariantSerializer
 
-# class ProductAttributeDetailViewSet(viewsets.ModelViewSet):
-#     queryset = ProductAttributeDetail.objects.all()
-#     serializer_class = ProductAttributeDetailSerializer
+    @action(detail=True, methods=['get'])
+    def attributes(self, request, pk=None):
+        variant = self.get_object()
+        attributes = AttributeValues.objects.filter(variants=variant)
+
+        colors = attributes.filter(attribute__title__iexact="color")
+        sizes = attributes.filter(attribute__title__iexact="size")
+
+        color_serializer = AttributeValuesSerializer(colors, many=True)
+        size_serializer = AttributeValuesSerializer(sizes, many=True)
+
+        return Response({
+            'colors': color_serializer.data,
+            'sizes': size_serializer.data
+        })
+
+class ProductReviewViewSet(viewsets.ModelViewSet):
+    queryset = ProductReview.objects.all()
+    serializer_class = ProductReviewSerializer
 
 class ProductGalleryViewSet(viewsets.ModelViewSet):
     queryset = ProductGallery.objects.all()
