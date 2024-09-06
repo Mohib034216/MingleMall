@@ -18,7 +18,7 @@ const cartSlice = createSlice(
             qtyTotal(state){
                 const qty = state.cartItems
                 return qty
-                console.log(qty)
+                
             },
 
             calTotal(state){
@@ -47,6 +47,7 @@ const cartSlice = createSlice(
                 } 
                 cartSlice.caseReducers.calTotal(state);
                 toast.success('Product added to the cart!');
+                console.log(action.payload);
             },
             removeCart(state,action){
                 state.cartItems = state.cartItems.filter((item) => item.id !== action.payload);

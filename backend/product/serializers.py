@@ -52,8 +52,9 @@ class ProductSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Product
-        fields = ['id', 'title', 'category', 'thumbnail', 'description', 'price', 'slug', 'created_at', 'updated_at', 'variants','review']
-
+        fields = ['id', 'title', 'category', 'thumbnail', 'description', 'price', 'sku', 'stock_status', 'slug', 'created_at', 'updated_at', 'variants','review']
+        # fields = ['variants','review']
+        # fields = "__all__"
 
 # class ProductAttributeDetailSerializer(serializers.ModelSerializer):
     
