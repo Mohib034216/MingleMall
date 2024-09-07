@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import axios from "axios";
 import { toast } from "react-toastify";
 
 
@@ -15,6 +16,7 @@ const cartSlice = createSlice(
         name:'cart',
         initialState,
         reducers:{
+            
             qtyTotal(state){
                 const qty = state.cartItems
                 return qty
@@ -22,6 +24,7 @@ const cartSlice = createSlice(
             },
 
             calTotal(state){
+            
                 let qty = 0;
                 let total = 0;
                 
@@ -47,7 +50,7 @@ const cartSlice = createSlice(
                 } 
                 cartSlice.caseReducers.calTotal(state);
                 toast.success('Product added to the cart!');
-                console.log(action.payload);
+                
             },
             removeCart(state,action){
                 state.cartItems = state.cartItems.filter((item) => item.id !== action.payload);

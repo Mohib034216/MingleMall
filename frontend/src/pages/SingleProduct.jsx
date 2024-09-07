@@ -39,10 +39,10 @@ function SingleProduct() {
   
   const product = {
     id: ProductList?.id ,
-    title: ProductList?.title,
-    image: ProductList?.thumbnail,
-    review: ProductList?.review,
-    price: ProductList?.price,
+    // title: ProductList?.title,
+    // image: ProductList?.thumbnail,
+    // review: ProductList?.review,
+    price: filteredVariant ? filteredVariant[0].sale_price : ProductList?.price,
     quantity: qty,
     variant:filteredVariant && filteredVariant[0].id
    
@@ -72,11 +72,15 @@ function SingleProduct() {
   const handleColorSelect = (color) => {
     setSelectedColor(color);
     filterVariants(color, selectedSize);
+    filterAvailableSizes(color)
+
   };
 
   const handleSizeSelect = (size) => {
     setSelectedSize(size);
     filterVariants(selectedColor, size);
+    filterAvailableColors(size)
+
   };
  
   const filterVariants = (color, size) => {
@@ -95,11 +99,13 @@ function SingleProduct() {
   };
    // Filter available sizes based on selected color
    const filterAvailableSizes = (color) => {
-    if (!product || !product.variations) return;
+  
+    if (!ProductList || !ProductList.variants) return;
 
     const sizesForColor = new Set();
-    product.variations.forEach(variant => {
+    ProductList.variants.forEach(variant => {
       const hasColor = variant.attribute_values.some(attr => attr.attribute_title === "Color" && attr.value === color);
+    
       if (hasColor) {
         variant.attribute_values.forEach(attr => {
           if (attr.attribute_title === "Size") {
@@ -114,10 +120,10 @@ function SingleProduct() {
 
  // Filter available colors based on selected size
   const filterAvailableColors = (size) => {
-    if (!product || !product.variations) return;
+    if (!ProductList || !ProductList.variants) return;
 
     const colorsForSize = new Set();
-    product.variations.forEach(variant => {
+    ProductList.variants.forEach(variant => {
       const hasSize = variant.attribute_values.some(attr => attr.attribute_title === "Size" && attr.value === size);
       if (hasSize) {
         variant.attribute_values.forEach(attr => {
@@ -218,7 +224,9 @@ function SingleProduct() {
               <div className="product-container">  
             {/* Display colors */}
       <div className="product-colors">
-        <h3>Choose Color:</h3>
+        <h3>Choose Color:</h3> 
+        <p> Selected Color: {selectedColor && selectedColor}
+        </p>
         <div className="color-options">
           {colors.map((color, index) => (
             <div
@@ -238,6 +246,9 @@ function SingleProduct() {
       {/* Display sizes */}
       <div className="product-sizes">
         <h3>Choose Size:</h3>
+        <p> Selected Size: {selectedSize && selectedSize}
+        </p>
+
         <div className="size-options">
           {sizes.map((size, index) => (
             <button
@@ -260,7 +271,12 @@ function SingleProduct() {
           
           <div className="product-add-cart">
             <ProductQty quantity={qty} setQuantity={setQty} />
-            <button onClick={()=>{filteredVariant && dispatch(addToCart(product))}} >Add To Cart <i className="fa fa-shopping-cart"></i>   </button>
+            <button onClick={()=>{
+              (colors.length > 0) && (sizes.length > 0) ?
+                filteredVariant && dispatch(addToCart(product)) :
+                ProductList && dispatch(addToCart(product))
+              
+              }} >Add To Cart <i className="fa fa-shopping-cart"></i>   </button>
           </div>
           <div className="product-social-share">
             <h3>Share on:</h3>
