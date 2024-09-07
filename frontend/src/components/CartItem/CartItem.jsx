@@ -47,11 +47,11 @@ const handleUpdate = (qty) => {
            
             <div className="item-title" value={id}>
           
-              <img width={70} height={70} src={product?.thumbnail} alt="" />
-              <span>{product?.title.length > 20 ? `${product?.title.slice(0, 17)}...`: product?.title }</span>
+              {/* <img width={70} height={70} src={product?.thumbnail} alt="" /> */}
+              <p>{product?.title.length > 20 ? `${product?.title.slice(0, 17)}...`: product?.title }</p>
             </div>
             <div className="item-price">
-              <span>{product?.price}</span>
+              <p>{product?.price}</p>
             </div>
             <div className="item-qty">
               <ProductQty  quantity={qty} setQuantity={handleUpdate}/>
