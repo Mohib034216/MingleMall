@@ -31,6 +31,8 @@ INSTALLED_APPS = [
     # LOCAL APPS
     'user.apps.UserConfig',
     'product.apps.ProductConfig',
+    'order.apps.OrderConfig',
+    'cart.apps.CartConfig',
     
     # THIRD PARTY APPS
     'rest_framework_simplejwt',

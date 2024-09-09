@@ -21,17 +21,16 @@ function CartItem({cartItem, Qty}) {
   useEffect(()=>{
     axios(`http://localhost:8000/products/${id}`).then(response =>{
       setProduct(response.data);
+      console.log(response.data);
     }).catch(error => {
       console.error("There was an error fetching the product!", error);
     });
   })
-  // console.log(product);
-
+  
 const handleRemove = (id) => {
   if (id){
     dispatch(removeCart(id))
   }
- 
 }
 const handleUpdate = (qty) => {
   setQty(qty)
@@ -49,6 +48,7 @@ const handleUpdate = (qty) => {
           
               {/* <img width={70} height={70} src={product?.thumbnail} alt="" /> */}
               <p>{product?.title.length > 20 ? `${product?.title.slice(0, 17)}...`: product?.title }</p>
+              
             </div>
             <div className="item-price">
               <p>{product?.price}</p>
