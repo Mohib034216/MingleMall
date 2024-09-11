@@ -4,9 +4,23 @@ from rest_framework.routers import DefaultRouter
 #                     AttributeValuesViewSet, VariantsViewSet,
 #                      ProductGalleryViewSet)
 from .views import *
+from rest_framework import routers
 
-router = DefaultRouter()
-router.register(r'', ProductViewSet)
+class CustomRouter(routers.DefaultRouter):
+    def get_urlpatterns(self):
+        urlpatterns = []
+        for viewset, prefix in self.registry:
+            lookup_url = r'^{prefix}/{sku}/$'.format(prefix=prefix)
+            urlpatterns.append(routers.Route(lookup_url, viewset.as_view({'get': 'retrieve'})))
+        return urlpatterns
+
+
+
+router = CustomRouter()
+# router = DefaultRouter()
+router.register(r'', ProductViewSet, basename='product')
+# router.register(r'', ProductViewSet)    
+# router.register(r'/<str:sku>/', ProductOrVariantView.as_view())
 router.register(r'categories', CategoryViewSet)
 router.register(r'attributes', AttributesViewSet)
 router.register(r'attribute-values', AttributeValuesViewSet)

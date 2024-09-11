@@ -106,10 +106,6 @@ class Variants(models.Model):
     
 
 
-
-    
-
-
 # class ProductAttributeDetail(models.Model):
 #     variant = models.ForeignKey(Variants,related_name="values",on_delete=models.CASCADE)
 #     attribute = models.ForeignKey(AttributeValues,on_delete=models.CASCADE)

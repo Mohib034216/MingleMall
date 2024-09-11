@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from rest_framework import viewsets
 from rest_framework.response import Response
+from rest_framework.views import APIView
 from rest_framework.decorators import action
 from .models import Category, Product, Attributes, AttributeValues, Variants, ProductGallery
 # from .serializers import (CategorySerializer, ProductSerializer, 
@@ -15,6 +16,32 @@ class CategoryViewSet(viewsets.ModelViewSet):
 class ProductViewSet(viewsets.ModelViewSet):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
+    lookup_field = 'sku'
+
+#     @action(detail=False, methods=['get'])
+#     def by_sku(self, request):
+#         sku = request.query_params.get('sku')
+#         if sku:
+#             variant = Variants.objects.filter(sku=sku).first()
+#             if variant:
+#                 serializer = self.get_serializer(variant)
+#                 return Response(serializer.data)
+#         return Response({'error': 'Variant not found'}, status=404)
+
+# class ProductOrVariantView(APIView):
+#     def get(self, request, sku):
+#         try:
+#             product = Product.objects.get(sku=sku)
+#             if product.variations.exists():  # Check if product has variants
+#                 variant = product.variations.get(sku=sku)
+#                 serializer = VariantSerializer(variant)
+#             else:
+#                 serializer = ProductSerializer(product)
+#             return Response(serializer.data)
+#         except Product.DoesNotExist:
+#             return Response({"error": "Product not found"}, status=404)
+
+
 
 class AttributesViewSet(viewsets.ModelViewSet):
     queryset = Attributes.objects.all()
@@ -28,21 +55,32 @@ class VariantsViewSet(viewsets.ModelViewSet):
     queryset = Variants.objects.all()
     serializer_class = VariantSerializer
 
-    @action(detail=True, methods=['get'])
-    def attributes(self, request, pk=None):
-        variant = self.get_object()
-        attributes = AttributeValues.objects.filter(variants=variant)
+    # @action(detail=False, methods=['get'])
+    # def by_sku(self, request):
+    #     sku = request.query_params.get('sku')
+    #     if sku:
+    #         variant = Variants.objects.filter(sku=sku).first()
+    #         if variant:
+    #             serializer = self.get_serializer(variant)
+    #             return Response(serializer.data)
+    #     return Response({'error': 'Variant not found'}, status=404)
 
-        colors = attributes.filter(attribute__title__iexact="color")
-        sizes = attributes.filter(attribute__title__iexact="size")
 
-        color_serializer = AttributeValuesSerializer(colors, many=True)
-        size_serializer = AttributeValuesSerializer(sizes, many=True)
+    # @action(detail=True, methods=['get'])
+    # def attributes(self, request, pk=None):
+    #     variant = self.get_object()
+    #     attributes = AttributeValues.objects.filter(variants=variant)
 
-        return Response({
-            'colors': color_serializer.data,
-            'sizes': size_serializer.data
-        })
+    #     colors = attributes.filter(attribute__title__iexact="color")
+    #     sizes = attributes.filter(attribute__title__iexact="size")
+
+    #     color_serializer = AttributeValuesSerializer(colors, many=True)
+    #     size_serializer = AttributeValuesSerializer(sizes, many=True)
+
+    #     return Response({
+    #         'colors': color_serializer.data,
+    #         'sizes': size_serializer.data
+    #     })
 
 class ProductReviewViewSet(viewsets.ModelViewSet):
     queryset = ProductReview.objects.all()
