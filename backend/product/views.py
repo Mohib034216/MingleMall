@@ -13,35 +13,27 @@ class CategoryViewSet(viewsets.ModelViewSet):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
 
+
 class ProductViewSet(viewsets.ModelViewSet):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
-    lookup_field = 'sku'
 
-#     @action(detail=False, methods=['get'])
-#     def by_sku(self, request):
-#         sku = request.query_params.get('sku')
-#         if sku:
-#             variant = Variants.objects.filter(sku=sku).first()
-#             if variant:
-#                 serializer = self.get_serializer(variant)
-#                 return Response(serializer.data)
-#         return Response({'error': 'Variant not found'}, status=404)
-
-# class ProductOrVariantView(APIView):
-#     def get(self, request, sku):
-#         try:
-#             product = Product.objects.get(sku=sku)
-#             if product.variations.exists():  # Check if product has variants
-#                 variant = product.variations.get(sku=sku)
-#                 serializer = VariantSerializer(variant)
-#             else:
-#                 serializer = ProductSerializer(product)
-#             return Response(serializer.data)
-#         except Product.DoesNotExist:
-#             return Response({"error": "Product not found"}, status=404)
-
-
+    # def retrieve(self, request, *args, **kwargs):
+    #     sku = kwargs.get('pk')
+    #     try:
+    #         # Try to find a product with the given SKU
+    #         product = Product.objects.get(sku=sku)
+    #         serializer = self.get_serializer(product)
+    #         return Response(serializer.data)
+    #     except Product.DoesNotExist:
+    #         # If not found, try to find a variant with the given SKU
+    #         try:
+    #             variant = Variants.objects.get(sku=sku)
+    #             product = variant.product
+    #             serializer = self.get_serializer(product)
+    #             return Response(serializer.data)
+    #         except Variants.DoesNotExist:
+    #             return Response({'error': 'Product not found'}, status=404)
 
 class AttributesViewSet(viewsets.ModelViewSet):
     queryset = Attributes.objects.all()
@@ -54,6 +46,21 @@ class AttributeValuesViewSet(viewsets.ModelViewSet):
 class VariantsViewSet(viewsets.ModelViewSet):
     queryset = Variants.objects.all()
     serializer_class = VariantSerializer
+     
+    def retrieve(self, request, *args, **kwargs):
+        sku = kwargs.get('pk')
+        print(sku)
+        try: 
+            variant = Variants.objects.get(sku=sku)
+            print(variant)
+            # product = variant.product
+            serializer = self.get_serializer(variant)
+            return Response(serializer.data)
+        except Variants.DoesNotExist:
+            return Response({'error': 'Product not found'}, status=404)
+
+
+
 
     # @action(detail=False, methods=['get'])
     # def by_sku(self, request):

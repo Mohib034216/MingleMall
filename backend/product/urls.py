@@ -5,20 +5,15 @@ from rest_framework.routers import DefaultRouter
 #                      ProductGalleryViewSet)
 from .views import *
 from rest_framework import routers
+from rest_framework.urlpatterns import format_suffix_patterns
 
-class CustomRouter(routers.DefaultRouter):
-    def get_urlpatterns(self):
-        urlpatterns = []
-        for viewset, prefix in self.registry:
-            lookup_url = r'^{prefix}/{sku}/$'.format(prefix=prefix)
-            urlpatterns.append(routers.Route(lookup_url, viewset.as_view({'get': 'retrieve'})))
-        return urlpatterns
+router = DefaultRouter()
+# router.register(r'', ProductViewSet, basename='product')
+router.register(r'', ProductViewSet, basename='products')
+router.register(r'/variants/<pk>', VariantsViewSet, basename='product-variants')
 
 
 
-router = CustomRouter()
-# router = DefaultRouter()
-router.register(r'', ProductViewSet, basename='product')
 # router.register(r'', ProductViewSet)    
 # router.register(r'/<str:sku>/', ProductOrVariantView.as_view())
 router.register(r'categories', CategoryViewSet)
@@ -31,3 +26,10 @@ router.register(r'product-gallery', ProductGalleryViewSet)
 urlpatterns = [
     path('', include(router.urls)),
 ]
+
+
+# urlpatterns = [
+#     path('products/<str:sku>/', ProductViewSet.as_view({'get': 'retrieve'})),
+# ]
+
+# urlpatterns = format_suffix_patterns(urlpatterns)

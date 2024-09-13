@@ -14,18 +14,41 @@ function CartItem({cartItem, Qty}) {
   // const id = params.id;
   // const {id, title, thumbnail, price, description, quantity} = cartItem;
   
-  const {id, quantity, variant} = cartItem; 
+  const {id, quantity, sku, variant} = cartItem; 
   const [qty,setQty] = useState(quantity);
   const [product,setProduct] = useState()
   const dispatch = useDispatch()
   useEffect(()=>{
     axios(`http://localhost:8000/products/${id}`).then(response =>{
-      setProduct(response.data);
-      console.log(response.data);
+      
+      const product = response.data;
+      if (product.variants.some( variant =>  variant.sku === sku )) {
+        
+          console.log(sku);
+          axios.get(`http://localhost:8000/products/variants/${sku}`)
+          .then(response => {
+                const variant = response.data;
+                setProduct(variant);
+              })
+              .catch(error => {
+                console.error(error);
+              });
+
+          
+        }
+        else{
+
+        setProduct(product);
+        }
+
+
+
     }).catch(error => {
       console.error("There was an error fetching the product!", error);
     });
   })
+
+  // console.log(product);
   
 const handleRemove = (id) => {
   if (id){
@@ -47,7 +70,23 @@ const handleUpdate = (qty) => {
             <div className="item-title" value={id}>
           
               {/* <img width={70} height={70} src={product?.thumbnail} alt="" /> */}
-              <p>{product?.title.length > 20 ? `${product?.title.slice(0, 17)}...`: product?.title }</p>
+              <p>
+              
+              { variant.length > 0 ?
+
+                  product?.product.title.length > 20 ?`${product?.product.title.slice(0, 17)}...`: product?.product.title
+                  (product?.title)
+                  :
+                  product?.title.length > 20 ?
+                  
+                  `${product?.title.slice(0, 17)}...`:
+                  
+                  product?.title
+                  
+                  
+                }
+              
+              </p>
               
             </div>
             <div className="item-price">

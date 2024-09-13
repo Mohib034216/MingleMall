@@ -89,19 +89,19 @@ class AttributeValues(models.Model):
 class Variants(models.Model):
     attribute_values = models.ManyToManyField(AttributeValues, related_name='attribute_values', blank=True)
     product = models.ForeignKey(Product, related_name='variations', on_delete=models.CASCADE)
-    variation_name = models.CharField(max_length=255)
+    title = models.CharField(max_length=255)
     sku = models.CharField(max_length=64, unique=True, blank=True, null=True)
     regular_price = models.DecimalField(max_digits=10, decimal_places=2)
     sale_price = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
     price = models.DecimalField(max_digits=10, decimal_places=2)
     stock_quantity = models.IntegerField(default=0)
-    stock_status = models.CharField(max_length=20, choices=[('In Stock', 'In Stock'), ('Out of Stock', 'Out of Stock')])
+    stock_status = models.CharField(max_length=20, choices=[('In Stock', 'In Stock'), ( 'Out of Stock', 'Out of Stock')])
     manage_stock = models.BooleanField(default=True)
     created_at = models.DateTimeField( auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return f"{self.product.title}-{self.variation_name}"
+        return f"{self.product.title}-{self.title}"
 
     
 
