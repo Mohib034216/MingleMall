@@ -40,12 +40,9 @@ function SingleProduct() {
   const product = {
     id: ProductList?.id ,
     sku:filteredVariant ? filteredVariant[0].sku : ProductList?.sku,
-    // title: ProductList?.title,
-    // image: ProductList?.thumbnail,
-    // review: ProductList?.review,
     price: filteredVariant ? filteredVariant[0].sale_price : ProductList?.price,
     quantity: qty,
-    variant:filteredVariant && filteredVariant[0].id
+    // variant:filteredVariant && filteredVariant[0].id
    
   };
 

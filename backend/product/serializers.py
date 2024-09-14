@@ -35,6 +35,7 @@ class AttributeValuesSerializer(serializers.ModelSerializer):
 
 class VariantSerializer(serializers.ModelSerializer):
     attribute_values = AttributeValuesSerializer(many=True)
+    # Product = ProductSerializer(many=True,soruce="variations")
 
     class Meta:
         model = Variants

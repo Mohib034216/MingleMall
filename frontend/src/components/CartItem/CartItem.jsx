@@ -14,41 +14,29 @@ function CartItem({cartItem, Qty}) {
   // const id = params.id;
   // const {id, title, thumbnail, price, description, quantity} = cartItem;
   
-  const {id, quantity, sku, variant} = cartItem; 
+  const {id, quantity, sku} = cartItem; 
   const [qty,setQty] = useState(quantity);
   const [product,setProduct] = useState()
+  const [variant,setVariant] = useState(undefined)
+
   const dispatch = useDispatch()
   useEffect(()=>{
     axios(`http://localhost:8000/products/${id}`).then(response =>{
       
-      const product = response.data;
+      setProduct(response.data)
       if (product.variants.some( variant =>  variant.sku === sku )) {
-        
-          console.log(sku);
-          axios.get(`http://localhost:8000/products/variants/${sku}`)
-          .then(response => {
-                const variant = response.data;
-                setProduct(variant);
-              })
-              .catch(error => {
-                console.error(error);
-              });
-
-          
-        }
-        else{
-
-        setProduct(product);
-        }
-
-
+        const getVariantBySku =  product.variants.find(variant => variant.sku === sku);
+        setVariant(getVariantBySku);
+      
+      }
 
     }).catch(error => {
       console.error("There was an error fetching the product!", error);
+
+       
+
     });
   })
-
-  // console.log(product);
   
 const handleRemove = (id) => {
   if (id){
@@ -72,19 +60,17 @@ const handleUpdate = (qty) => {
               {/* <img width={70} height={70} src={product?.thumbnail} alt="" /> */}
               <p>
               
-              { variant.length > 0 ?
-
-                  product?.product.title.length > 20 ?`${product?.product.title.slice(0, 17)}...`: product?.product.title
-                  (product?.title)
-                  :
-                  product?.title.length > 20 ?
-                  
-                  `${product?.title.slice(0, 17)}...`:
-                  
-                  product?.title
-                  
+              { 
+ 
+                  product?.title.length > 20 ?`${product?.title.slice(0, 17)}...`: product?.title
+              }
+              <br/>
+              
+                {  
+                  variant &&  `(${ variant?.title})`
                   
                 }
+                  
               
               </p>
               

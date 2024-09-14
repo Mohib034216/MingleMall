@@ -40,7 +40,7 @@ const cartSlice = createSlice(
 
             },
             addToCart(state,action){
-                const  cartItem = state.cartItems.find(item => item.id === action.payload.id);
+                const  cartItem = state.cartItems.find(item => item.sku === action.payload.sku);
                 if(!cartItem){
                    state.cartItems.push(action.payload);                    
                 }
