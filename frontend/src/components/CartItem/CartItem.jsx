@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import './CartItem.css';
 import ProductQty from '../ProductQty/ProductQty';
 import { useDispatch } from 'react-redux';
-import { removeCart, updateCart } from '../../feadured/Cart';
+import { removeCart, updateCart, get_item } from '../../feadured/Cart';
 
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
@@ -33,10 +33,10 @@ function CartItem({cartItem, Qty}) {
     }).catch(error => {
       console.error("There was an error fetching the product!", error);
 
-       
-
     });
-  })
+  });
+ 
+console.log(dispatch(get_item(id,sku)));
   
 const handleRemove = (id) => {
   if (id){

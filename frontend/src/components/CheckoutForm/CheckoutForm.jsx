@@ -1,14 +1,31 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import './CheckoutForm.css'
-
+import axios from 'axios';
 
 const CheckoutForm = () => {
   const { cartItems} = useSelector(state => state.cart)
-  // const {total} = useSelector(state => state.cart)
-  // const {id, title, thumbnail, price, description, quantity} = cartItems; 
-
+  const {id, quantity, sku} = cartItems; 
   const [useSameAddress, setUseSameAddress] = useState(true);
+  const [product,setProduct] = useState()
+  const [variant,setVariant] = useState(undefined)
+
+  useEffect(()=>{
+    axios(`http://localhost:8000/products/${id}`).then(response =>{
+      
+      setProduct(response.data)
+      if (product.variants.some( variant =>  variant.sku === sku )) {
+        const getVariantBySku =  product.variants.find(variant => variant.sku === sku);
+        setVariant(getVariantBySku);
+      
+      }
+
+    }).catch(error => {
+      console.error("There was an error fetching the product!", error);
+        })
+    })
+
+
 
   const handleCheckboxChange = () => {
       setUseSameAddress(!useSameAddress);

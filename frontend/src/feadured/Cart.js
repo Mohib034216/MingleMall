@@ -16,6 +16,24 @@ const cartSlice = createSlice(
         name:'cart',
         initialState,
         reducers:{
+            get_item(state,action){
+                console.log(action.payload.sku);
+                
+                // axios(`http://localhost:8000/products/${action.payload.id}`).then(response =>{
+      
+                //     const product = response.data
+                //     if (product.variants.some( variant =>  variant.sku === action.payload.sku )) {
+                //       const getVariantBySku =  product.variants.find(variant => variant.sku === action.payload.sku);
+                //       console.log(getVariantBySku);
+                //       return {product:product,variant:getVariantBySku};
+                //     }
+                //     return product
+              
+                //   }).catch(error => {
+                //     console.error("There was an error fetching the product!", error);
+                //       })
+
+            },
             
             qtyTotal(state){
                 const qty = state.cartItems
@@ -76,5 +94,5 @@ const cartSlice = createSlice(
     }
 )
 
-export const {addToCart,removeCart, calTotal,updateCart} = cartSlice.actions;
+export const {addToCart,removeCart, calTotal,updateCart,get_item} = cartSlice.actions;
 export default cartSlice.reducer;
