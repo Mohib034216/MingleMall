@@ -1,6 +1,6 @@
 @echo off
 REM Navigate to your Django project directory
-cd C:\Users\Mohib Ali\Desktop\G-shop\backend
+cd C:\Users\Mohib Ali\Desktop\MINGLEMALL\backend
 
 REM Activate the virtual environment
 @REM call Scripts\activate
