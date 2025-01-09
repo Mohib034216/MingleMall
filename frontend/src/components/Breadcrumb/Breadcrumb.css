@@ -1,0 +1,29 @@
+.breadcrumb{
+    width: 100%;
+    height: 10vw;
+    
+}
+.breadcrumb-content{
+    width: 80%;
+    height: 3vw;
+    display: flex;
+    align-items: center;
+    margin: 5% 5%;
+    padding: 1% 1%;
+    gap: 1vw;
+    font-size: 1.7vw;
+    background-color: var(--white);
+}
+.breadcrumb-item a{
+    text-decoration: none;
+    color: #000000a1;
+    
+}
+.breadcrumb-item:not(:first-child)::before {
+    content:"/";
+    padding-right: .5625rem;
+    color: #000000a1    ;
+}
+.breadcrumb-content > .active {
+    color: var(--primary);
+}

@@ -1,0 +1,34 @@
+.product-card{
+    width: 20vw;
+    height: 30vw;
+    background-color: var(--white);
+}
+.product-item{
+    line-height: 2vw;
+}
+
+.product-img img{
+    width: 100%;
+    height: 22vw;
+
+
+}
+.product-title a{
+    color: var(--black);
+    font-size: 1rem;
+    font-weight:500;
+}
+.product-title a:hover{
+    color: var(--primary);
+}
+
+.product-prices{
+    /* font-size: 1rem; */
+    font-weight: 500;
+    display: flex;
+    justify-content: center;
+    gap: 1vw;
+}
+.product-star i {
+    color: var(--yellow);
+}

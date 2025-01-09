@@ -1,0 +1,26 @@
+
+.item-qty{
+    display: flex;
+    width: 10vw;
+    height: 3.5vw;
+    margin-right: 4vw;
+  }
+  .item-qty span{
+    /* width:4vw;
+    height: 3vw; */
+    line-height: 2.5vw;
+    font-size: 1.6vw;
+    font-weight: 500;
+    padding: .6vw  .8vw;
+    background-color: var(--primary);
+    cursor: pointer;
+  }
+  .item-qty input{
+      width:5vw;
+      height: 2vw;
+      text-align: center;
+      background-color: var(--secondary);
+      border: none;
+    }
+ 
+  

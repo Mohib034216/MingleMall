@@ -1,0 +1,39 @@
+.address-list{
+    font-family: var(--font-family-s1);
+    margin: 3vw 3vw;
+    /* width: 50%; */
+    background-color: #fff;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+
+}
+.address-list-title{
+    /* width: 100%; */
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    /* gap: 1vw 40vw; */
+    /* justify-content: space-between; */
+    /* align-items: center; */
+   
+
+}
+/* .address-list-title-txt{} */
+.address-list-title-edit{text-align: end;}
+.address-list-info{
+    margin: 1vw 0vw;
+}
+.address-list-tag-label{
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--white);
+    padding: 2px 13px;
+    border-radius: 99px;
+    margin-right: 10px;
+    background-image: linear-gradient(-143deg, var(--primary) 0%, rgb(248, 153, 134) 100%);
+}
+.address-list-line{
+    font-size: 1rem;
+}
+
