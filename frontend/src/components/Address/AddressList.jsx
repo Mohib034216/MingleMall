@@ -13,9 +13,11 @@ function AddressList() {
     dispatch(AddressListAction(userInfo));
   },[]);
   // console.log(AddressBook)
-  
-  return (
-    <div className='address-list'>
+  if(AddressBook['Shipping'].label){
+
+    
+    return (
+      <div className='address-list'>
       <div className="address-list-title">
           <p className='address-list-title-txt'>Shipping & Billing</p>
           <a className='address-list-title-edit'>Edit</a>
@@ -28,6 +30,12 @@ function AddressList() {
       
     </div>
   )
+}
+else{
+  return (
+    <a className='address-list-title-edit'>Add Addresses</a>
+  )
+}
 }
 
 export default AddressList

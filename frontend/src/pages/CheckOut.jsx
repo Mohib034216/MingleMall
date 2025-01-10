@@ -28,7 +28,7 @@ function CheckOut() {
     <div className="checkout">
 
       <AddressList/>
-      {/* <CheckoutForm/>    */}
+      
       <CheckoutSummary/>   
       <CheckoutItems/>
       <button onClick={()=>{alert("chalgaya")}}>Proceed to Pay</button>
