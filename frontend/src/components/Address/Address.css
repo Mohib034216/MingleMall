@@ -1,11 +1,13 @@
 .address-list{
-    font-family: var(--font-family-s1);
-    margin: 3vw 3vw;
-    /* width: 50%; */
-    background-color: #fff;
+    width: 100%;
+    max-width: 700px;
+    margin-bottom: 4vw;
     padding: 20px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    border-radius: 10px;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    font-family: Arial, sans-serif;
+    
 
 }
 .address-list-title{
@@ -37,3 +39,94 @@
     font-size: 1rem;
 }
 
+
+/* ADDRESSFORM COMPONENT STYLING */
+
+
+.delivery-form-container {
+    width: 100%;
+    max-width: 700px;
+    margin-bottom: 4vw;
+    padding: 20px;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    font-family: Arial, sans-serif;
+  }
+  
+  .delivery-form-container h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #333;
+  }
+  
+  .delivery-form {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+  }
+  
+  .form-group {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .form-group label {
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #555;
+  }
+  
+  .form-group input,
+  .form-group select {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+  }
+  
+  .form-group input:focus,
+  .form-group select:focus {
+    border-color: #007bff;
+    outline: none;
+  }
+  
+  .label-options {
+    display: flex;
+    gap: 10px;
+  }
+  
+  .label-button {
+    padding: 10px 20px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: white;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: bold;
+  }
+  
+  .label-button.active {
+    border-color: var(--primary);
+    background-color:#fead8852;
+  }
+  
+  .submit-button {
+    grid-column: span 2;
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+  }
+  
+  .submit-button:hover {
+    background-color: #0056b3;
+  } 
+  
+  
+    
+/* END ADDRESSFORM COMPONENT STYLING */

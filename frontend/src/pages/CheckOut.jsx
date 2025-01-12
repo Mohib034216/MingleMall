@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useSelector } from 'react-redux';
 import { Navigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
@@ -10,9 +10,11 @@ import axios from 'axios';
 
 
 
+
 function CheckOut() {
     const {quantity} = useSelector(state => state.cart)
- 
+   
+  
     // if(quantity === 0){
     //     toast.warning('Cart is Empty');
     //     return <Navigate to={"/cart"} replace={true}/>
@@ -25,14 +27,28 @@ function CheckOut() {
         
   return (
     <>
-    <div className="checkout">
-
+    {/* <div className="checkout"> */}
+    <div className="checkout-page">
+      {/* Left Section */}
+      <div className="left-section">
       <AddressList/>
+     
+          <CheckoutItems/>
+         
+      </div>
+
+      {/* Right Section */}
+      <div className="right-section">
       
-      <CheckoutSummary/>   
-      <CheckoutItems/>
-      <button onClick={()=>{alert("chalgaya")}}>Proceed to Pay</button>
+       
+          <CheckoutSummary/>  
+      </div>
     </div>
+      
+       
+      
+      {/* <button onClick={()=>{alert("chalgaya")}}>Proceed to Pay</button>
+    </div> */}
     </>
   )
 }

@@ -13,11 +13,12 @@
   max-width: 29vw;
   height: -moz-fit-content;
   height: fit-content;
-  padding: 20px;
-  margin: 4vw 0vw;
-  background-color: #f9f9f9;
+  padding: 2vw;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   border: 1px solid #ddd;
-  border-radius: 10px;
+  /* border-radius: 10px; */
 }
 /* .checkout-container {
   display: flex;
@@ -104,3 +105,138 @@ label::before {display: none;}
 .checkout-items-list span{
   padding: 2vw 2vw;
 }
+
+
+
+/* CHECKOUTSUMMARY COMPONENT STYLING */
+.promotion,
+.order-summary {
+  margin-bottom: 20px;
+}
+
+.promotion input {
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.promotion button {
+  padding: 8px 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.order-summary .summary-item,
+.order-summary .summary-total {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.proceed-button {
+  width: 100%;
+  padding: 10px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+/* END CHECKOUTSUMMARY COMPONENT STYLING */
+
+
+/* CHECKOUTITEM COMPONENT STYLING  */
+.package-details {
+  margin-top: 20px;
+  border-top: 1px solid #ddd;
+  padding-top: 20px;
+}
+
+.delivery-option {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 20px;
+}
+
+.delivery-info {
+  margin-left: 10px;
+}
+
+.delivery-info p {
+  margin: 2px 0;
+}
+
+.delivery-date {
+  font-size: 14px;
+  color: #555;
+}
+
+.product-order-card {
+  display: flex;
+  gap: 20px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 10px;
+  background: #f9f9f9;
+  align-items: center;
+}
+
+.product-image {
+  width: 100px;
+  height: 100px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  object-fit: cover;
+}
+
+.product-info {
+  flex: 2;
+}
+
+.product-title {
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.product-details {
+  font-size: 14px;
+  color: #666;
+}
+
+.product-stock {
+  margin-top: 10px;
+  font-size: 14px;
+}
+
+.stock-warning {
+  color: #d9534f;
+  font-weight: bold;
+}
+
+.product-pricing {
+  text-align: right;
+  flex: 1;
+}
+
+.product-price {
+  font-size: 18px;
+  font-weight: bold;
+  color: #333;
+}
+
+.product-discount {
+  font-size: 14px;
+  color: #888;
+}
+
+.discount-percentage {
+  color: #d9534f;
+  font-weight: bold;
+}
+
+/* END CHECKOUTITEM COMPONENT STYLING  */

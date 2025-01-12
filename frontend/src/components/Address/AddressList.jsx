@@ -1,7 +1,8 @@
 import React, { useEffect } from 'react'
 import "./Address.css"
 import { useDispatch, useSelector } from 'react-redux';
-import {AddressListAction} from "../../feadured/Auth"
+import {AddressListAction} from "../../feadured/Auth";
+import  AddressForm from "../Address/AddressForm";
 
 
 function AddressList() {
@@ -13,11 +14,12 @@ function AddressList() {
     dispatch(AddressListAction(userInfo));
   },[]);
   // console.log(AddressBook)
-  if(AddressBook['Shipping'].label){
+  if( AddressBook['Shipping'] && AddressBook['Shipping'].label){
 
     
     return (
       <div className='address-list'>
+        <h1>Delivery Information</h1>
       <div className="address-list-title">
           <p className='address-list-title-txt'>Shipping & Billing</p>
           <a className='address-list-title-edit'>Edit</a>
@@ -32,9 +34,7 @@ function AddressList() {
   )
 }
 else{
-  return (
-    <a className='address-list-title-edit'>Add Addresses</a>
-  )
+  return <AddressForm/>
 }
 }
 

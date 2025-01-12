@@ -6,32 +6,41 @@ import ProductQty from '../ProductQty/ProductQty'
 
 function CheckoutItems() {
   const { cartItems} = useSelector(state => state.cart)
+  console.log(cartItems)
   return (
     <>
     <div className="checkout-items">
 
     {
-                cartItems.map((item)=>                  
-
-                     <table class='order-table'>
-        
-          <tbody>
-            <tr>
-              <td><img width={200} height={200} src='https://dl.dropboxusercontent.com/s/qbj9tsbvthqq72c/Vintage-20L-Backpack-by-Fj%C3%A4llr%C3%A4ven.jpg' class='full-width'></img>
-              </td>
-              <td>
-                <br/> <span class='thin'>{item.product.title.slice(0,25)+'...'}</span>
-                <br/>Vintage Backpack<br/> <span class='thin small'> Color: Olive, Size: 20L qty: {item.quantity}</span>
-              </td>
-              <td>
-                <div class='price'>${item.price}</div>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-
-                  // <span><img src={item.product.img} alt={item.product.img} /> </span>
+                cartItems.map((item)=> 
                   
+                  
+        <div className="product-order-card">
+        <img
+          src="https://via.placeholder.com/100" // Replace with actual product image
+          alt="Product"
+          className="product-image"
+          />
+        <div className="product-info">
+          <p className="product-title">
+        
+            {item.product.title}
+          </p>
+          <p className="product-details">color-size: {item.variant && item.variant.title}</p>
+          {/* <p className="product-stock">
+            <span className="stock-warning">Only 2 item(s) in stock</span>
+          </p> */}
+        </div>
+        <div className="product-pricing">
+          <p className="product-price">Rs. {item.variant ? item.variant.sale_price : item.price}</p>
+          <p className="product-discount">
+            
+            <strike>Rs. {item.variant && (Math.abs(item.variant.regular_price - item.variant.sale_price) / (item.variant.regular_price + item.variant.sale_price / 2)  * 100).toFixed(2)}</strike> <span className="discount-percentage">-75%</span>
+          </p>
+        </div>
+      </div>
+
+                   
                 )
                 
                 } 

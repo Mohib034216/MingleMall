@@ -10,46 +10,65 @@ const CheckoutSummary = () => {
   // const [product,setProduct] = useState()
   // const [variant,setVariant] = useState(undefined)
   console.log(cartItems)
+  const [promoCode, setPromoCode] = useState("");
 
-  useEffect(()=>{
-    // axios(`http://127.0.0.1:8000/products/by_sku/?sku=${variant?variant.sku:product.sku}`).then(response =>{
-      
-      // setProduct(response.data)
-      // if (product.variants.some( variant =>  variant.sku === product.sku )) {
-      //   const getVariantBySku =  product.variants.find(variant => variant.sku === product.sku);
-      //   setVariant(getVariantBySku);
-      
-      // }
-
-    // }).catch(error => {
-    //   console.error("There was an error fetching the product!", error);
-        // })
-    })
-
-
-
-  const handleCheckboxChange = () => {
-      setUseSameAddress(!useSameAddress);
+  const handlePromoChange = (e) => {
+    setPromoCode(e.target.value);
   };
 
+  const handlePromoApply = () => {
+    alert(`Promo Code "${promoCode}" applied!`);
+  };
+
+
+
+    const handleProceedToPay = () => {
+      alert("Proceeding to payment...");
+    };
+ 
+
   const subtotal = cartItems.reduce((acc, item) => acc + item.price * item.quantity, 0);
+  const qty = cartItems.reduce((total, product) => total + product.quantity, 0);
   const shipping = 100;
   const total = subtotal + shipping ;
 
 
   return (
-    <>
+    <div className="checkout-summary">
 
-            <div className="checkout-summary">
-                <h3>Order Summary</h3>
-                
-              
-                    <div className="sub-total">Subtotal <span>${subtotal.toFixed(2)}</span></div>
-                    <div className="total">Total <span>${total.toFixed(2)}</span></div>
-                </div>
-        
-    
-    </>
+        <div className="promotion">
+          <h3>Promotion</h3>
+          <input
+            type="text"
+            placeholder="Enter Store/Daraz Code"
+            value={promoCode}
+            onChange={handlePromoChange}
+          />
+          <button onClick={handlePromoApply}>APPLY</button>
+        </div>
+        <div className="order-summary">
+          <h3>Order Summary</h3>
+          <div className="summary-item">
+            <span>Items Total ({qty} items)</span>
+            <span>Rs. 775</span>
+          </div>
+          <div className="summary-item">
+            <span>Delivery Fee</span>
+            <span>Rs. 979</span>
+          </div>
+          <div className="summary-item">
+            <span>Delivery Discount</span>
+            <span>-Rs. 979</span>
+          </div>
+          <div className="summary-total">
+            <span>Total:</span>
+            <span>Rs. 775</span>
+          </div>
+          <button className="proceed-button" onClick={handleProceedToPay}>
+            Proceed to Pay
+          </button>
+        </div>  
+      </div>
   );
 };
 
