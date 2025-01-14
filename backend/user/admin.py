@@ -9,7 +9,7 @@ class UserAdmin(admin.ModelAdmin):
     list_display =['email']
 
 class AddressBookAdmin(admin.ModelAdmin):
-    list_display = ["user", "full_name", "phone", "address", "city", "is_shipping", "is_billing"]
+    list_display = ["user", "full_name", "phone_number", "address", "city", "is_shipping", "is_billing"]
 
 
 

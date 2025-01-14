@@ -60,5 +60,9 @@ class LoginSerializer(serializers.Serializer):
 class AddressBookSerializer(serializers.ModelSerializer):
     class Meta:
         model = AddressBook
-        fields = '__all__'
+        fields =  ['user','full_name','phone_number','province','city','building','landmark','address','label','is_shipping','is_billing'] 
+        # fields =  '__all__'
+       
+        # def create(self,validated_data):
+        #     return super().create(**validated_data)
     

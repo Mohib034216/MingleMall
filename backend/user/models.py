@@ -76,22 +76,35 @@ LABEL_CHOICES = (
     )
 
 class AddressBook(models.Model):
-    user = models.ForeignKey('User', on_delete=models.CASCADE)
-    label = models.CharField(default='Home',unique=True,choices=LABEL_CHOICES, max_length=15)
-    full_name =  models.CharField( max_length=50)
-    phone = models.CharField(max_length=15, blank=True, null=True)
-    address = models.CharField( max_length=400)
-    city = models.CharField( max_length=50)
-    # country = models.CharField( max_length=50)
+    LABEL_CHOICES = [
+        ('Home', 'Home'),
+        ('Office', 'Office'),
+    ]
+
+    user = models.ForeignKey(User, on_delete=models.CASCADE)  # Link to a user
+    full_name = models.CharField(max_length=100)  # Full Name
+    phone_number = models.CharField(max_length=15)  # Phone Number
+    province = models.CharField(max_length=50)  # Province
+    city = models.CharField(max_length=50)  # City
+    area = models.CharField(max_length=100, blank=True, null=True)  # Area
+    building = models.CharField(max_length=200, blank=True, null=True)  # Building / House No / Floor / Street
+    landmark = models.CharField(max_length=200, blank=True, null=True)  # Colony / Suburb / Locality / Landmark
+    address = models.CharField(max_length=400)  # Full Address
+    label = models.CharField(max_length=10, choices=LABEL_CHOICES, default='Home')  # Label for delivery
     is_shipping = models.BooleanField(default=False)
     is_billing = models.BooleanField(default=False)
-    created_at =  models.DateTimeField( auto_now_add=True)
-    updated_at =  models.DateTimeField( auto_now=True)
+    created_at = models.DateTimeField(auto_now_add=True)  # Record creation timestamp
+    updated_at = models.DateTimeField(auto_now=True)  # Record update timestamp
 
-    def save(self, *args, **kwargs):
-        if not self.phone and self.user:
-            self.phone = self.user.phone
-        super(AddressBook, self).save(*args, **kwargs)
+    def __str__(self):
+        return f"{self.full_name} - {self.label}"
+  
+ 
+
+    # def save(self, *args, **kwargs):
+    #     if not self.phone_number and self.user:
+    #         self.phone_number = self.user.phone
+    #     super(AddressBook, self).save(*args, **kwargs)
 
 
 

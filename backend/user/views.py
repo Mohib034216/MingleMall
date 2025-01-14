@@ -42,7 +42,7 @@ class LoginView(APIView):
 
 class AddressView(APIView):
     def get(self, request, email):
-        print(f"Request Data:{email}")
+        # print(f"Request Data:{email}")
         user = User.object.get(email=email)
         if user:
             # default_address = user.filter()
@@ -50,15 +50,25 @@ class AddressView(APIView):
             billing_address = AddressBook.objects.filter(user=user,is_billing=True).first()
             serialize_shipping_address = AddressBookSerializer(shipping_address).data 
             serialize_billing_address = AddressBookSerializer(billing_address).data 
-            # print(default_address)
+            print(billing_address)
             return Response({'shipping':serialize_shipping_address, 'billing':serialize_billing_address}, status=status.HTTP_200_OK)
         
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 
-    def post(self, request):
-        serializer = LoginSerializer(data=request.data)
-        if serializer.is_valid():
-            return Response(serializer.data, status=status.HTTP_200_OK)
+    def post(self, request, email):
+        try:
+            user = User.object.get(email=email)
+        except User.DoesNotExist:
+            return Response({"error": "User not found"}, status=status.HTTP_404_NOT_FOUND)
+
+        data = request.data
+        data['user'] = user.id 
+        # request.data.
+        if user:
+            serializer = AddressBookSerializer(data=data, context={'request': request})
+            if serializer.is_valid():
+                serializer.save()
+                return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

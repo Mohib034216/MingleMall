@@ -1,33 +1,50 @@
 import React, { useState } from 'react'
 import "./Address.css"
+import axios from 'axios'
+import {  useSelector } from 'react-redux';
+import axiosInstance from '../../axios/AxiosInstance';
 
 
 function AddressForm() {
+  const {userInfo} = useSelector(state => state.auth);
   const [formData, setFormData] = useState({
-    fullName: "",
-    phoneNumber: "",
-    building: "",
-    locality: "",
-    address: "",
-    province: "Sindh",
-    city: "Johi",
-    area: "Goth Bachal Khan",
-    label: "",
+    full_name : '',
+    phone_number : '',
+    province : '',
+    city : '',
+    area : '',
+    building : '',
+    landmark : '',
+    address : '',
+    label : 'Home',
+    is_shipping : true,
+    is_billing : true,
+    
   });
 
+    console.log(userInfo)
   const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
+    const { name, value, type, checked } = e.target;
+    setFormData({
+      ...formData,
+      [name]: type === 'checkbox' ? checked : value,
+    });
   };
 
   const handleLabelClick = (label) => {
     setFormData({ ...formData, label });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Form Data:", formData);
-    alert("Delivery information saved!");
+    try {
+      // const response = await axiosInstance.post(`user/addressbook/${userInfo}`, formData);
+      const response = await axios.post(`http://localhost:8000/user/addressbook/${userInfo}`, formData);
+      alert('Address saved successfully!');
+      console.log(response.data);
+    } catch (error) {
+      console.error('Error saving address:', error.response.data);
+    }
   };
 
   return (
@@ -40,9 +57,9 @@ function AddressForm() {
           <input
             type="text"
             id="fullName"
-            name="fullName"
+            name="full_name"
             placeholder="Enter your first and last name"
-            value={formData.fullName}
+            value={formData.full_name}
             onChange={handleChange}
             required
           />
@@ -70,9 +87,9 @@ function AddressForm() {
           <input
             type="tel"
             id="phoneNumber"
-            name="phoneNumber"
+            name="phone_number"
             placeholder="Please enter your phone number"
-            value={formData.phoneNumber}
+            value={formData.phone_number}
             onChange={handleChange}
             required
           />
@@ -128,9 +145,9 @@ function AddressForm() {
           <input
             type="text"
             id="locality"
-            name="locality"
+            name="landmark"
             placeholder="Please enter"
-            value={formData.locality}
+            value={formData.landmark}
             onChange={handleChange}
             required
           />
@@ -157,20 +174,20 @@ function AddressForm() {
             <button
               type="button"
               className={`label-button ${
-                formData.label === "OFFICE" ? "active" : ""
+                formData.label === "Office" ? "active" : ""
               }`}
-              onClick={() => handleLabelClick("OFFICE")}
+              onClick={() => handleLabelClick("Office")}
             >
-              OFFICE
+              Office
             </button>
             <button
               type="button"
               className={`label-button ${
-                formData.label === "HOME" ? "active" : ""
+                formData.label === "Home" ? "active" : ""
               }`}
-              onClick={() => handleLabelClick("HOME")}
+              onClick={() => handleLabelClick("Home")}
             >
-              HOME
+              Home
             </button>
           </div>
         </div>

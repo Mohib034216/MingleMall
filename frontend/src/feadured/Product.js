@@ -8,7 +8,7 @@ export const fetchProductBySku = createAsyncThunk(
       try {
         // console.log(sku)
         const response = await axios.get(`http://127.0.0.1:8000/products/by_sku/?sku=${sku}`);
-        console.log(response.data)
+        // console.log(response.data)
         return response.data;
       } catch (error) {
         return rejectWithValue(error.response ? error.response.data : "Something went wrong");
