@@ -40,7 +40,7 @@ const CheckoutSummary = () => {
           <h3>Promotion</h3>
           <input
             type="text"
-            placeholder="Enter Store/Daraz Code"
+            placeholder="Enter Store Code"
             value={promoCode}
             onChange={handlePromoChange}
           />
