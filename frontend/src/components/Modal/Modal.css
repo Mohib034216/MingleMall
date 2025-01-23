@@ -17,7 +17,7 @@
     background: white;
     width: 100%;
     height: 90%;
-    overflow-y: scroll;
+    overflow-y: auto;
     max-width: 500px;
     border-radius: 10px;
     padding: 1vw 4vw;
@@ -64,7 +64,7 @@
   }
   
   /* Open Modal Button */
-  button {
+  /* .modal-header > button {
     padding: 10px 20px;
     background-color: #007bff;
     color: white;
@@ -73,7 +73,15 @@
     cursor: pointer;
   }
   
-  button:hover {
+  .modal-header > button:hover {
     background-color: #0056b3;
   }
-  
+   */
+
+  .modal-title{
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    margin-right: 3vw;
+    line-height: 2vw;
+  }

@@ -17,9 +17,19 @@ function AddressList() {
     setIsModalOpen(false);
     setModalContent(null);
   };
-
+  
   const handleShowAddressList = () => {
-    setModalTitle("List Address")
+    setModalTitle(
+      <>
+      <div className="modal-title">
+      <h3>List Address</h3>
+      <a className="address-list-title-edit" onClick={handleShowAddressForm}>
+        Add Address
+      </a>
+      </div>
+      </>
+    )
+    console.log(AddressBook && AddressBook)
 
     setModalContent(
       
