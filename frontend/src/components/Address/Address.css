@@ -22,7 +22,7 @@
 
 }
 /* .address-list-title-txt{} */
-.address-list-title-edit{text-align: end;}
+.address-list-title-edit{text-align: end;cursor: pointer;}
 .address-list-info{
     margin: 1vw 0vw;
 }

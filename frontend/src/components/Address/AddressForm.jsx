@@ -6,7 +6,8 @@ import axiosInstance from '../../axios/AxiosInstance';
 
 
 function AddressForm() {
-  const {userInfo} = useSelector(state => state.auth);
+  const {userInfo, AddressBook} = useSelector(state => state.auth);
+  
   const [formData, setFormData] = useState({
     full_name : '',
     phone_number : '',
@@ -17,12 +18,11 @@ function AddressForm() {
     landmark : '',
     address : '',
     label : 'Home',
-    is_shipping : true,
-    is_billing : true,
+    is_shipping : AddressBook.length == 0 ? true : false,
+    is_billing : AddressBook.length == 0 ? true : false,
     
   });
 
-    console.log(userInfo)
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
     setFormData({

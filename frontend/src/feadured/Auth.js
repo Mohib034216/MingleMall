@@ -61,9 +61,10 @@ const authSlice = createSlice({
                 })
                 .addCase(AddressListAction.fulfilled, (state, action) => {
                 // state.status = 'succeeded';
-                state.AddressBook['Billing'] = action.payload.billing;
-                state.AddressBook['Shipping'] = action.payload.shipping;
-                console.log(action.payload.billing)
+                // state.AddressBook['Billing'] = action.payload.billing;
+                // state.AddressBook['Shipping'] = action.payload.shipping;
+                state.AddressBook = action.payload;
+                console.log(action.payload)
                 console.log(state.AddressBook)
                 })
                 .addCase(AddressListAction.rejected, (state, action) => {

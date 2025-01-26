@@ -99,7 +99,14 @@ class AddressBook(models.Model):
     def __str__(self):
         return f"{self.full_name} - {self.label}"
   
- 
+    
+    def save(self, *args, **kwargs):
+        # Check if the user has any addresses with is_shipping or is_billing set to True
+        if not AddressBook.objects.filter(user=self.user, is_shipping=True).exists():
+            self.is_shipping = True
+        if not AddressBook.objects.filter(user=self.user, is_billing=True).exists():
+            self.is_billing = True
+        super(AddressBook, self).save(*args, **kwargs)
 
     # def save(self, *args, **kwargs):
     #     if not self.phone_number and self.user:

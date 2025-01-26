@@ -44,14 +44,19 @@ class AddressView(APIView):
     def get(self, request, email):
         # print(f"Request Data:{email}")
         user = User.object.get(email=email)
+        print(user)
         if user:
             # default_address = user.filter()
-            shipping_address = AddressBook.objects.filter(user=user,is_shipping=True).first()
-            billing_address = AddressBook.objects.filter(user=user,is_billing=True).first()
-            serialize_shipping_address = AddressBookSerializer(shipping_address).data 
-            serialize_billing_address = AddressBookSerializer(billing_address).data 
-            print(billing_address)
-            return Response({'shipping':serialize_shipping_address, 'billing':serialize_billing_address}, status=status.HTTP_200_OK)
+            # shipping_address = AddressBook.objects.filter(user=user,is_shipping=True).first()
+            # billing_address = AddressBook.objects.filter(user=user,is_billing=True).first()
+            # serialize_shipping_address = AddressBookSerializer(shipping_address).data 
+            # serialize_billing_address = AddressBookSerializer(billing_address).data 
+            user_addresses = AddressBook.objects.filter(user=user)
+            # print(f'USer adresses {user_addresses}')
+            serializer_address =  AddressBookSerializer(user_addresses, many=True).data
+            # print(serializer_address)
+            # return Response({'shipping':serialize_shipping_address, 'billing':serialize_billing_address}, status=status.HTTP_200_OK)
+            return Response(serializer_address, status=status.HTTP_200_OK)
         
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 

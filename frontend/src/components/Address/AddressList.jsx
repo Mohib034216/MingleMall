@@ -4,11 +4,13 @@ import { useDispatch, useSelector } from 'react-redux';
 import {AddressListAction} from "../../feadured/Auth";
 import  AddressForm from "../Address/AddressForm";
 import Modal from '../Modal/Modal';
+// import axios from 'axios';
 
 
 
 function AddressList() {
   const  dispatch = useDispatch();
+  const {userInfo, AddressBook} = useSelector(state => state.auth);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalContent, setModalContent] = useState(null);
   const [modalTitle, setModalTitle] = useState(null);
@@ -29,64 +31,46 @@ function AddressList() {
       </div>
       </>
     )
-    console.log(AddressBook && AddressBook)
 
     setModalContent(
-      
-       AddressBook['Shipping'] && AddressBook['Shipping'].label ?
-       <div className="address-list-info">
-       <span className='address-list-tag-label'>{AddressBook['Shipping'] && AddressBook['Shipping'].label}</span>
-       <span className='address-list-line'>{AddressBook['Shipping'] && AddressBook['Shipping'].address}</span>
-     </div>
-        :
-        <></>
+    
+      AddressBook.map((address, index) => {
+        return(
+        <div key={index} className="address-list-info">
+        <span className='address-list-tag-label'>{address && address.label}</span>
+        <span className='address-list-line'>{address && address.address}</span>
+      </div>
+
+        )
+      })
+    //    AddressBook['Shipping'] && AddressBook['Shipping'].label ?
+    //    <div className="address-list-info">
+    //    <span className='address-list-tag-label'>{AddressBook['Shipping'] && AddressBook['Shipping'].label}</span>
+    //    <span className='address-list-line'>{AddressBook['Shipping'] && AddressBook['Shipping'].address}</span>
+    //  </div>
+        // :
+        // <></>
     );
     setIsModalOpen(true);
   };
 
   const handleShowAddressForm = () => {
+    
+
     setModalTitle("Add Address")
     setModalContent(
-      <form>
-        <label htmlFor="fullName">Full Name</label>
-        <input type="text" id="fullName" placeholder="Enter full name" />
-
-        <label htmlFor="phone">Phone Number</label>
-        <input type="text" id="phone" placeholder="Enter phone number" />
-
-        <label htmlFor="address">Address</label>
-        <textarea id="address" placeholder="Enter address"></textarea>
-
-        <label htmlFor="city">City</label>
-        <input type="text" id="city" placeholder="Enter city" />
-
-        <label htmlFor="province">Province</label>
-        <select id="province">
-          <option value="">Select Province</option>
-          <option value="Sindh">Sindh</option>
-          <option value="Punjab">Punjab</option>
-          <option value="Balochistan">Balochistan</option>
-          <option value="KPK">Khyber Pakhtunkhwa</option>
-        </select>
-        <button type="submit" style={{ marginTop: "10px" }}>
-          Save
-        </button>
-        <button className='' onClick={handleCloseModal} style={{ marginTop: "10px" }}>
-          Close
-        </button>
-      </form>
+     <AddressForm/>
     );
     setIsModalOpen(true);
   };
   
 
-  const {userInfo, AddressBook} = useSelector(state => state.auth);
   // console.log(userInfo)
   useEffect(() => {
     dispatch(AddressListAction(userInfo));
   },[]);
-  // console.log(AddressBook)
-  if( AddressBook['Shipping'] && AddressBook['Shipping'].label){
+  // console.log(AddressBook[0].full_name)
+  if( AddressBook[0]){
 
     
     return (
@@ -110,10 +94,17 @@ function AddressList() {
           {/* <a onClick={handleAddressChange} className='address-list-title-edit'>Edit</a> */}
 
       </div>
-      <div className="address-list-info">
-        <span className='address-list-tag-label'>{AddressBook['Shipping'] && AddressBook['Shipping'].label}</span>
-        <span className='address-list-line'>{AddressBook['Shipping'] && AddressBook['Shipping'].address}</span>
-      </div>
+      {AddressBook.map((address, index) => {
+        if (address.is_shipping === true) {
+          return (
+            <div key={index} className="address-list-info">
+              <span className="address-list-tag-label">{address.label}</span>
+              <span className="address-list-line">{address.address}</span>
+            </div>
+          );
+        }
+        return null; // Skip rendering for non-shipping addresses
+      })}
       <Modal
         isOpen={isModalOpen}
         onClose={handleCloseModal}
