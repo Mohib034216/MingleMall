@@ -5,11 +5,12 @@ import axios from 'axios';
 
 const CheckoutSummary = () => {
   const { cartItems} = useSelector(state => state.cart)
+  const { userInfo} = useSelector(state => state.auth)
   const {id, quantity, product,variant} = cartItems; 
   const [useSameAddress, setUseSameAddress] = useState(true);
   // const [product,setProduct] = useState()
   // const [variant,setVariant] = useState(undefined)
-  console.log(cartItems)
+  console.log(userInfo)
   const [promoCode, setPromoCode] = useState("");
 
   const handlePromoChange = (e) => {
@@ -22,8 +23,13 @@ const CheckoutSummary = () => {
 
 
 
-    const handleProceedToPay = () => {
+    const handleProceedToPay = async () => {
+      var data = cartItems
+      data.customer = userInfo
+      
+      const response = await axios.post(`http://localhost:8000/orders/place-order/`, data);
       alert("Proceeding to payment...");
+      console.log(response)
     };
  
 

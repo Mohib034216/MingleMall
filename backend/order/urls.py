@@ -5,8 +5,8 @@ from rest_framework.routers import DefaultRouter
 #                      ProductGalleryViewSet)
 from .views import *
 
-router = DefaultRouter()
-# router.register(r'', ProductViewSet)
+# router = DefaultRouter()
+# router.register(r'order_place/', OrderPlaceAPIView.as_view())
 # router.register(r'categories', CategoryViewSet)
 # router.register(r'attributes', AttributesViewSet)
 # router.register(r'attribute-values', AttributeValuesViewSet)
@@ -15,5 +15,5 @@ router = DefaultRouter()
 # router.register(r'product-gallery', ProductGalleryViewSet)
 
 urlpatterns = [
-    path('', include(router.urls)),
+    path('place-order/', OrderPlaceAPIView.as_view(), name='place-order'),
 ]
