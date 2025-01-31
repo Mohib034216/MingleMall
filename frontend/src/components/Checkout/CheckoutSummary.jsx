@@ -24,10 +24,10 @@ const CheckoutSummary = () => {
 
 
     const handleProceedToPay = async () => {
-      var data = cartItems
-      data.customer = userInfo
+      // var data = cartItems
+  
       
-      const response = await axios.post(`http://localhost:8000/orders/place-order/`, data);
+      const response = await axios.post(`http://localhost:8000/orders/place-order/`, {cart:cartItems,customer:userInfo});
       alert("Proceeding to payment...");
       console.log(response)
     };

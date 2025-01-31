@@ -5,7 +5,8 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from django.db import transaction
-from cart.models import Cart, CartItem
+from cart.models import Cart
+from user.models import User
 from .models import Order
 from .serializers import OrderSerializer
 
@@ -16,10 +17,13 @@ class OrderPlaceAPIView(APIView):
 
     @transaction.atomic
     def post(self, request):
-        user = request.user
+        data = request.data
+        customer = User.object.get(email=data['customer'])
+        print(f"DATA {customer}")
 
         # Retrieve the cart for the user
-        cart = Cart.objects.filter(customer=user).first()
+        cart = Cart.objects.filter(customer=customer).first()
+        print(f"CART HAI {cart}")
         if not cart or not cart.items.exists():
             return Response({"detail": "Cart is empty or not found."}, status=status.HTTP_400_BAD_REQUEST)
 
@@ -28,6 +32,7 @@ class OrderPlaceAPIView(APIView):
         total_price = 0
 
         for cart_item in cart.items.all():
+        
             item_data = {
                 "product": cart_item.product.id,
                 "variant": cart_item.variant.id if cart_item.variant else None,
@@ -39,8 +44,8 @@ class OrderPlaceAPIView(APIView):
 
         # Create order
         order_data = {
-            "user": user.id,
-            "total_price": total_price,
+            "customer": customer,
+            "total": total_price,
             "items": items,
         }
         serializer = OrderSerializer(data=order_data)

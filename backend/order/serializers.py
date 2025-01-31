@@ -16,7 +16,7 @@ class OrderItemSerializer(serializers.ModelSerializer):
         model = OrderItem
         # fields = "__all__"
         # fields = ['product_sku', 'variant_sku', 'quantity', 'price']
-        fields = ['id','product', 'variant', 'quantity', 'price']
+        fields = ['product', 'variant', 'quantity', 'price']
         read_only_fields = ['created_at', 'updated_at']
 
 
@@ -25,44 +25,44 @@ class OrderSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Order
-        fields = ['id', 'customer', 'created_at', 'updated_at', 'items']
-        read_only_fields = ['created_at', 'updated_at']
+        fields = ['customer','total', 'items']
+        read_only_fields = ['created_at', 'updated_at'] 
 
-    # def create(self, validated_data):
-    #     print(f"Serializer Data {validated_data}")
-        # customer = validated_data['customer']
-        # product_sku = validated_data['product']
-        # variant_sku = validated_data.get('variant', None)
-        # quantity = validated_data['quantity']
+    def create(self, validated_data):
+        print(f"Serializer Data {validated_data}")
+        customer = validated_data['customer']
+        product_sku = validated_data['product']
+        variant_sku = validated_data.get('variant', None)
+        quantity = validated_data['quantity']
 
-        # # Find product/variant
-        # if variant_sku:
-        #     variant = Variants.objects.filter(sku=variant_sku).first()
-        #     if not variant:
-        #         raise serializers.ValidationError("Variant SKU is invalid.")
-        #     product = variant.product
-        # else:
-        #     product = Product.objects.filter(sku=product_sku).first()
-        #     if not product:
-        #         raise serializers.ValidationError("Product SKU is invalid.")
-        #     variant = None
+        # Find product/variant
+        if variant_sku:
+            variant = Variants.objects.filter(sku=variant_sku).first()
+            if not variant:
+                raise serializers.ValidationError("Variant SKU is invalid.")
+            product = variant.product
+        else:
+            product = Product.objects.filter(sku=product_sku).first()
+            if not product:
+                raise serializers.ValidationError("Product SKU is invalid.")
+            variant = None
 
-        # # Get or create Order
-        # Order, _ = Order.objects.get_or_create(customer__email=customer)
+        # Get or create Order
+        Order, _ = Order.objects.get_or_create(customer__email=customer)
 
-        # # Get or create Order item
-        # Order_item, created = OrderItem.objects.get_or_create(
-        #     Order=Order,
-        #     product=product,
-        #     variant=variant,
-        #     defaults={'quantity': quantity, 'price': variant.price if variant else product.price}
-        # )
+        # Get or create Order item
+        Order_item, created = OrderItem.objects.get_or_create(
+            Order=Order,
+            product=product,
+            variant=variant,
+            defaults={'quantity': quantity, 'price': variant.price if variant else product.price}
+        )
 
-        # if not created:
-        #     Order_item.quantity += quantity
-        #     Order_item.save()
+        if not created:
+            Order_item.quantity += quantity
+            Order_item.save()
 
-        # return Order
+        return Order
 
 
 
