@@ -6,63 +6,26 @@ from product.serializers import *
 
 
 
-class OrderItemSerializer(serializers.ModelSerializer):
-    # product_sku = serializers.CharField(source='product.sku', read_only=True)
-    # variant_sku = serializers.CharField(source='variant.sku', read_only=True)
-    product = ProductSerializer()  # Nest ProductSerializer
-    variant = VariantSerializer()  # Nest VariantSerializer
 
+class OrderItemSerializer(serializers.ModelSerializer):
     class Meta:
         model = OrderItem
-        # fields = "__all__"
-        # fields = ['product_sku', 'variant_sku', 'quantity', 'price']
         fields = ['product', 'variant', 'quantity', 'price']
-        read_only_fields = ['created_at', 'updated_at']
-
 
 class OrderSerializer(serializers.ModelSerializer):
-    items = OrderItemSerializer(many=True)  # Nested serializer for Order items
+    items = OrderItemSerializer(many=True, write_only=True)
 
     class Meta:
         model = Order
-        fields = ['customer','total', 'items']
-        read_only_fields = ['created_at', 'updated_at'] 
+        fields = ['id', 'customer', 'total', 'status', 'items']
+        read_only_fields = ['id', 'created_at', 'updated_at', 'status']
 
     def create(self, validated_data):
-        print(f"Serializer Data {validated_data}")
-        customer = validated_data['customer']
-        product_sku = validated_data['product']
-        variant_sku = validated_data.get('variant', None)
-        quantity = validated_data['quantity']
-
-        # Find product/variant
-        if variant_sku:
-            variant = Variants.objects.filter(sku=variant_sku).first()
-            if not variant:
-                raise serializers.ValidationError("Variant SKU is invalid.")
-            product = variant.product
-        else:
-            product = Product.objects.filter(sku=product_sku).first()
-            if not product:
-                raise serializers.ValidationError("Product SKU is invalid.")
-            variant = None
-
-        # Get or create Order
-        Order, _ = Order.objects.get_or_create(customer__email=customer)
-
-        # Get or create Order item
-        Order_item, created = OrderItem.objects.get_or_create(
-            Order=Order,
-            product=product,
-            variant=variant,
-            defaults={'quantity': quantity, 'price': variant.price if variant else product.price}
-        )
-
-        if not created:
-            Order_item.quantity += quantity
-            Order_item.save()
-
-        return Order
+        items_data = validated_data.pop('items')
+        order = Order.objects.create(**validated_data)
+        for item in items_data:
+            OrderItem.objects.create(order=order, **item)
+        return order
 
 
 

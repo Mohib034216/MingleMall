@@ -17,6 +17,8 @@ class OrderPlaceAPIView(APIView):
 
     @transaction.atomic
     def post(self, request):
+
+        print(request.user.id)
         data = request.data
         customer = User.object.get(email=data['customer'])
         print(f"DATA {customer}")
