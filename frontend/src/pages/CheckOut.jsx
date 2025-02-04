@@ -15,11 +15,11 @@ function CheckOut() {
     const {quantity} = useSelector(state => state.cart)
    
   
-    // if(quantity === 0){
-    //     toast.warning('Cart is Empty');
-    //     return <Navigate to={"/cart"} replace={true}/>
+    if(quantity === 0){
+        toast.warning('Cart is Empty');
+        return <Navigate to={"/cart"} replace={true}/>
         
-    // }
+    }
     if(!localStorage.getItem('token')){
         toast.warning("Login Required")
         return <Navigate to={"/login"} replace={true}/>
