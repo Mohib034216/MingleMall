@@ -20,7 +20,7 @@ function CheckOut() {
         return <Navigate to={"/cart"} replace={true}/>
         
     }
-    if(!localStorage.getItem('token')){
+    if(!localStorage.getItem('token')){ 
         toast.warning("Login Required")
         return <Navigate to={"/login"} replace={true}/>
     }
