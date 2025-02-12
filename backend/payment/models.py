@@ -5,10 +5,11 @@ from order.models import Order
 
 class PaymentMethod(models.Model):
     METHOD_CHOICES = [
-        ('credit_card', 'Credit Card'),
         ('COD', 'Cash On Delivery'),
+        ('credit_card', 'Credit Card'),
+        ('easypaisa', 'EasyPaisa'),
         # ('paypal', 'PayPal'),
-        ('stripe', 'Stripe'),
+        # ('stripe', 'Stripe'),
         ]
     title = models.CharField(choices=METHOD_CHOICES, max_length=50  , unique=True)
     is_active = models.BooleanField(default=1)

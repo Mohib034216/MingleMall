@@ -1,16 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import './Checkout.css'
+import { useSearchParams, useNavigate } from "react-router-dom";
 import axios from 'axios';
 
 const CheckoutSummary = () => {
   const { cartItems} = useSelector(state => state.cart)
   const { userInfo} = useSelector(state => state.auth)
   const {id, quantity, product,variant} = cartItems; 
+  const navigate = useNavigate();
+  const [orderId, setOrderId] = useState(null);
   const [useSameAddress, setUseSameAddress] = useState(true);
-  // const [product,setProduct] = useState()
-  // const [variant,setVariant] = useState(undefined)
-  console.log(userInfo)
+ 
   const [promoCode, setPromoCode] = useState("");
 
   const handlePromoChange = (e) => {
@@ -25,11 +26,17 @@ const CheckoutSummary = () => {
 
     const handleProceedToPay = async () => {
       // var data = cartItems
-  
+      try {
+        // Create Order in Backend
+        const response = await axios.post(`http://localhost:8000/orders/place-order/`, {cart:cartItems,customer:userInfo});
+
+        setOrderId(response.data.id);
+        navigate(`/payment-method?order_id=${response.data.id}`);
+      } catch (error) {
+        console.error("Order Placement Error:", error);
+        alert("Failed to place order. Please try again.");
+      }
       
-      const response = await axios.post(`http://localhost:8000/orders/place-order/`, {cart:cartItems,customer:userInfo});
-      alert("Proceeding to payment...");
-      console.log(response)
     };
  
 

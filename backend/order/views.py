@@ -9,7 +9,7 @@ from django.db import transaction
 from cart.models import Cart
 from user.models import User
 from .models import Order
-from .serializers import OrderSerializer
+from .serializers import OrderSerializer, OrderListSerializer
 
 class OrderPlaceAPIView(APIView):
     """
@@ -54,8 +54,8 @@ class OrderPlaceAPIView(APIView):
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         serializer.is_valid(raise_exception=True)
         order = serializer.save()
-
         # Clear the cart
         cart.items.all().delete()
 
-        return Response(OrderSerializer(order).data)
+        print(f'ORDER RESPONSE{order}')
+        return Response(OrderListSerializer(order).data)

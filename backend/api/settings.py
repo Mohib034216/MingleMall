@@ -19,6 +19,17 @@ DEBUG = True
 ALLOWED_HOSTS = []
 
 
+# Payoneer Configuration
+PAYONEER_CLIENT_ID = "your_payoneer_client_id"
+PAYONEER_CLIENT_SECRET = "your_payoneer_client_secret"
+PAYONEER_PAYMENT_URL = "https://payoneer.com/api/payment"
+
+# EasyPaisa Configuration
+EASYPAY_STORE_ID = "your_easypaisa_store_id"
+EASYPAY_AUTH_TOKEN = "your_auth_token"
+EASYPAY_PAYMENT_URL = "https://easypaisa.com/api/payment"
+
+
 # Application definition
 
 INSTALLED_APPS = [

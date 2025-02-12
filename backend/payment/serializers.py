@@ -1,25 +1,24 @@
 from rest_framework import serializers
 from .models import *
-from product.models import *
-from product.serializers import *
+from payment.models import *
+# from payment.serializers import *
 
 
 
 
 
-class OrderItemSerializer(serializers.ModelSerializer):
+class PaymentMethodSerializer(serializers.ModelSerializer):
     class Meta:
         model = OrderItem
-        fields = ['product', 'variant', 'quantity', 'price']
+        fields = ['title']
 
-class OrderSerializer(serializers.ModelSerializer):
-    items = OrderItemSerializer(many=True)
-    customer = serializers.EmailField()  # Accept email instead of ID
+class PaymentSerializer(serializers.ModelSerializer):
+    payment_method = PaymentMethodSerializer()
 
 
     class Meta:
         model = Order
-        fields = ['customer', 'total', 'items']
+        fields = ['order','payment_method', 'total', 'amount']
         # read_only_fields = ['id', 'created_at', 'updated_at', 'status']
 
     def validate_customer(self, email):
@@ -51,12 +50,7 @@ class OrderSerializer(serializers.ModelSerializer):
         return order
 
 
-class OrderListSerializer(serializers.ModelSerializer):
- 
-    class Meta:
-        model = Order
-        fields = "__all__"
-        
+
 
 class OrderItemInputSerializer(serializers.Serializer):
     customer = serializers.EmailField()
