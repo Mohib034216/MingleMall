@@ -16,4 +16,5 @@ from .views import *
 
 urlpatterns = [
     path('place-order/', OrderPlaceAPIView.as_view(), name='place-order'),
+    path('<int:order_id>/', OrderAPIView.as_view(), name='order'),
 ]

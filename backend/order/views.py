@@ -1,5 +1,5 @@
 import decimal
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from rest_framework.views import APIView
 # Create your views here.
 
@@ -10,6 +10,17 @@ from cart.models import Cart
 from user.models import User
 from .models import Order
 from .serializers import OrderSerializer, OrderListSerializer
+
+
+class OrderAPIView(APIView):
+    def get(self,request, order_id):
+        """
+        API view to  order get by ID
+        """
+        order  =  get_object_or_404(Order, id=order_id)
+        print(order)
+        return Response(OrderListSerializer(order).data)
+
 
 class OrderPlaceAPIView(APIView):
     """

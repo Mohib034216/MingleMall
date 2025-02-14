@@ -8,6 +8,9 @@ from product.serializers import *
 
 
 class OrderItemSerializer(serializers.ModelSerializer):
+    product = ProductSerializer(many=True)  # Nest ProductSerializer
+    variant = VariantSerializer(many=True)  # Nest VariantSerializer
+ 
     class Meta:
         model = OrderItem
         fields = ['product', 'variant', 'quantity', 'price']
@@ -52,6 +55,7 @@ class OrderSerializer(serializers.ModelSerializer):
 
 
 class OrderListSerializer(serializers.ModelSerializer):
+    items = OrderItemSerializer(many=True)
  
     class Meta:
         model = Order

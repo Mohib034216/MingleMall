@@ -5,11 +5,12 @@ import { BrowserRouter, Routes,Route } from "react-router-dom";
 import Shop from './pages/Shop';
 import Home from './pages/Home';
 import Cart from './pages/Cart';
+import CheckOut from './pages/CheckOut';
+import OrderSuccess from './pages/OrderSuccess';
 import PaymentMethod from "./pages/PaymentMethod";
 import LoginSignup  from './pages/LoginSignup';
 import SingleProduct from './pages/SingleProduct';
 import { ToastContainer } from "react-toastify";
-import CheckOut from './pages/CheckOut';
 
 
 function App() {
@@ -25,8 +26,8 @@ function App() {
             <Route path="/login" element={<LoginSignup/>}/>
             <Route path="/checkout" element={<CheckOut/>}/>
             <Route path="/payment-method" element={<PaymentMethod/>} />
-            {/* <Route path="/payment-confirmation" element={<PaymentConfirmationPage />} />
-            <Route path="/order-success" element={<OrderSuccessPage />} /> */}
+            {/* <Route path="/payment-confirmation" element={<PaymentConfirmationPage />} />*/}
+            <Route path="/order-success" element={<OrderSuccess />} /> 
           </Routes>
         <Footer />
         </BrowserRouter>

@@ -31,6 +31,7 @@ const CheckoutSummary = () => {
         const response = await axios.post(`http://localhost:8000/orders/place-order/`, {cart:cartItems,customer:userInfo});
 
         setOrderId(response.data.id);
+        console.log(orderId);
         navigate(`/payment-method?order_id=${response.data.id}`);
       } catch (error) {
         console.error("Order Placement Error:", error);

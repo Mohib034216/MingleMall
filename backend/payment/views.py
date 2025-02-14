@@ -16,11 +16,11 @@ class CODPaymentAPIView(APIView):
     def post(self, request, order_id):
         order = get_object_or_404(Order, id=order_id, status="pending")
         order.payment_method = "cod"
-        order.status = "pending"
+        order.status = "shipping"
         order.payment_status = "pending"
         order.save()
 
-        return Response({"message": "Order placed with Cash on Delivery."}, status=status.HTTP_200_OK)
+        return Response({"message": "Order placed with Cash on Delivery."})
 
 
 
