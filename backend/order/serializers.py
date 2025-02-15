@@ -66,13 +66,7 @@ from product.serializers import *
 
 #         order = Order.objects.get(customer=validated_data['customer'])
 #         return  order      
-
-
-
-
-class OrderItemSerializer(serializers.ModelSerializer):
-    # product = serializers.PrimaryKeyRelatedField(queryset=Product.objects.all())
-    # variant = serializers.PrimaryKeyRelatedField(queryset=Variants.objects.all(), allow_null=True)
+class OrderItemListSerializer(serializers.ModelSerializer):
 
     product = ProductSerializer()
     variant = VariantSerializer(allow_null=True)
@@ -81,6 +75,26 @@ class OrderItemSerializer(serializers.ModelSerializer):
     class Meta:
         model = OrderItem
         fields = ['product', 'variant', 'quantity', 'price']
+
+class OrderListSerializer(serializers.ModelSerializer):
+    items = OrderItemListSerializer(many=True)
+ 
+    class Meta:
+        model = Order
+        fields = "__all__"
+        
+
+class OrderItemSerializer(serializers.ModelSerializer):
+
+    # product = ProductSerializer()
+    # variant = VariantSerializer(allow_null=True)
+
+ 
+    class Meta:
+        model = OrderItem
+        fields = ['product', 'variant', 'quantity', 'price']
+
+
 
 class OrderSerializer(serializers.ModelSerializer):
     items = OrderItemSerializer(many=True)
@@ -121,10 +135,4 @@ class OrderSerializer(serializers.ModelSerializer):
         return order
 
 
-class OrderListSerializer(serializers.ModelSerializer):
-    items = OrderItemSerializer(many=True)
- 
-    class Meta:
-        model = Order
-        fields = "__all__"
-        
+

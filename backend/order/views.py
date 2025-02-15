@@ -11,7 +11,7 @@ from user.models import User
 from product.models import *
 from product.serializers import *
 from .models import Order
-from .serializers import OrderSerializer, OrderListSerializer
+from .serializers import OrderSerializer, OrderListSerializer, OrderListSerializer
 
 
 class OrderAPIView(APIView):
@@ -49,8 +49,8 @@ class OrderPlaceAPIView(APIView):
             print(f"DICt CART ITEM {cart_item.product.title}")
         
             item_data = {
-                "product": {ProductSerializer(cart_item.product).data},
-                "variant": {VariantSerializer(cart_item.variant)} if cart_item.variant else None,
+                "product": cart_item.product.id, 
+                "variant": cart_item.variant.id if cart_item.variant else None,
                 "quantity": cart_item.quantity,
                 "price": cart_item.price,   
             }
