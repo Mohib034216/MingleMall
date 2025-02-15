@@ -78,6 +78,7 @@ const OrderSuccess = () => {
       try{ 
        const response =  await axios.get(`http://localhost:8000/orders/${orderNumber}/`);
        setOrderItems(response.data.items)
+       console.log(response.data.items)
        console.log(orderItems)
     
       } catch (error) {

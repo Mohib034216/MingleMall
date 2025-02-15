@@ -8,6 +8,8 @@ from rest_framework import status
 from django.db import transaction
 from cart.models import Cart
 from user.models import User
+from product.models import *
+from product.serializers import *
 from .models import Order
 from .serializers import OrderSerializer, OrderListSerializer
 
@@ -18,7 +20,7 @@ class OrderAPIView(APIView):
         API view to  order get by ID
         """
         order  =  get_object_or_404(Order, id=order_id)
-        print(order)
+       
         return Response(OrderListSerializer(order).data)
 
 
@@ -43,12 +45,14 @@ class OrderPlaceAPIView(APIView):
         total_price = 0
 
         for cart_item in cart.items.all():
+            print(f"TYPE CART ITEM {type(cart_item.product)}")
+            print(f"DICt CART ITEM {cart_item.product.title}")
         
             item_data = {
-                "product": cart_item.product.id,
-                "variant": cart_item.variant.id if cart_item.variant else None,
+                "product": {ProductSerializer(cart_item.product).data},
+                "variant": {VariantSerializer(cart_item.variant)} if cart_item.variant else None,
                 "quantity": cart_item.quantity,
-                "price": cart_item.price,
+                "price": cart_item.price,   
             }
             items.append(item_data)
             total_price += cart_item.price * cart_item.quantity
