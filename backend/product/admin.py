@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Product, Variants, ProductGallery, ProductReview
+from .models import Product, Variants, ProductGallery, ProductReview, Category
 from .Form import ProductForm, VariantsForm, ProductGalleryForm
 
 class ProductGalleryInline(admin.TabularInline):
@@ -23,6 +23,13 @@ class ProductAdmin(admin.ModelAdmin):
         return obj.img()
     img.allow_tags = True
 
+    
+class CategoryAdmin(admin.ModelAdmin):
+    list_display = ('id','title')
+
+
+
 admin.site.register(Product, ProductAdmin)
+admin.site.register(Category, CategoryAdmin)
 admin.site.register(ProductReview)
 

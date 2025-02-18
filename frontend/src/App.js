@@ -22,7 +22,7 @@ function App() {
             <Route path="/" element={<Home/>}/>
             <Route path="/product/:id" element={<SingleProduct/>}/>
             <Route path="/shop" element={<Shop/>}/>
-            <Route path="/cart" element={<Cart/>}/>
+            <Route path="/cart" element={<Cart/>}/>  
             <Route path="/login" element={<LoginSignup/>}/>
             <Route path="/checkout" element={<CheckOut/>}/>
             <Route path="/payment-method" element={<PaymentMethod/>} />

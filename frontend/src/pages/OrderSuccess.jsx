@@ -78,8 +78,6 @@ const OrderSuccess = () => {
       try{ 
        const response =  await axios.get(`http://localhost:8000/orders/${orderNumber}/`);
        setOrderItems(response.data.items)
-       console.log(response.data.items)
-       console.log(orderItems)
     
       } catch (error) {
         console.error("Payment Error:", error);
@@ -122,8 +120,10 @@ const OrderSuccess = () => {
           orderItems &&
           orderItems.map((item) => (
             <div key={item.id} style={styles.item}>
-              <img src={item.product.thumbnail} alt={item.product.title} style={styles.itemImage} />
+              {/* <img src={item.product.thumbnail} alt={item.product.title} style={styles.itemImage} /> */}
+              <img src={"https://uniworthdress.com/uploads/product/TCN2480-1.jpg"} alt={item.product.title} style={styles.itemImage} />
               <span>{item.product.title}</span>
+              {/* <p>{item.product.variants && item.product.variants.title}</p> */}
               <span style={styles.itemPrice}>₹ {item.product.price}</span>
             </div>
           ))}
