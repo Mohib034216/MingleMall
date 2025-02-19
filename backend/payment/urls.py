@@ -16,8 +16,10 @@ from .views import *
 
 urlpatterns = [
     path("cod/<int:order_id>/", CODPaymentAPIView.as_view(), name="cod-payment"),
-    path('payoneer/<int:order_id>/', CreditCardPaymentAPIView.as_view(), name='payoneer-payment'),
-    path('payoneer-callback/', CreditCardCallbackAPIView.as_view(), name='payoneer-payment'),
+    
+    path('paypal-payment/<int:order_id>/', PayPalPaymentView.as_view(), name='paypal-payment'),
+    path('capture-paypal/<str:payment_id>/', CapturePayPalPaymentView.as_view(), name='capture-paypal'),
+
     path("easypaisa/<int:order_id>/", EasyPaisaPaymentAPIView.as_view(), name="easypaisa-create-payment"),
     path('easypaisa-callback/', EasyPaisaCallbackAPIView.as_view(), name='payoneer-payment'),
 

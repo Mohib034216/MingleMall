@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import axios from "axios";
+import PayPalButton from "../components/PayPalButton/PayPalButton";
 
 const PaymentMethod = () => {
   const [selectedMethod, setSelectedMethod] = useState("");
@@ -66,6 +67,16 @@ const PaymentMethod = () => {
     },
   };
 
+  const paymentMethodSelected = (e) =>{
+      if(e === "paypal"){
+        alert('paypal');
+        return <PayPalButton />
+      }
+
+
+  
+
+  }
   const handlePayment = async () => {
     if (!selectedMethod) {
       alert("Please select a payment method.");
@@ -73,9 +84,18 @@ const PaymentMethod = () => {
     }
 
     try {
-      if (selectedMethod === "payoneer") {
-        const response = await axios.post(`http://127.0.0.1:8000/payment/payoneer/${orderId}/`);
-        window.location.href = response.data.payment_url;
+      if (selectedMethod === "paypal") {
+        const response = await axios.post(`http://127.0.0.1:8000/payment/paypal-payment/${orderId}/`);
+        console.log(response)
+        // window.location.href = response.data.payment_url;
+        
+        // localStorage.setItem('payment_method', selectedMethod);
+        // navigate('/pay-now');
+      //   <PayPalButton
+      //   amount="10.00"  // Dynamic value from your app
+      //   // onSuccess={handlePaymentSuccess}
+      //   // onError={handlePaymentError}
+      //  />
       }
 
       if (selectedMethod === "easypaisa") {
@@ -92,6 +112,11 @@ const PaymentMethod = () => {
       alert("Payment failed. Please try again.");
     }
   };
+  const a = [1,23,4,5,6,3]
+  const result = a.map((item)=>{
+    return item > 2
+  })
+  console.log(result)
 
   return (
     <div style={styles.container}>
@@ -102,13 +127,14 @@ const PaymentMethod = () => {
         <h4>Recommended method(s)</h4>
         <div
           style={styles.paymentOption}
-          onClick={() => setSelectedMethod("payoneer")}
+          onClick={()=> {paymentMethodSelected('paypal')}}
         >
           <img src={'https://cdn-icons-png.flaticon.com/512/6963/6963703.png'} alt="Credit Card" style={styles.icon} />
           <div style={styles.paymentDetails}>
             <span>Credit/Debit Card</span>
             <span style={styles.subText}>Visa / MasterCard</span>
           </div>
+      
         </div>
       </div>
 
@@ -157,3 +183,4 @@ const PaymentMethod = () => {
 };
 
 export default PaymentMethod;
+

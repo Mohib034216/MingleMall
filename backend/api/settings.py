@@ -19,10 +19,15 @@ DEBUG = True
 ALLOWED_HOSTS = []
 
 
-# Payoneer Configuration
-PAYONEER_CLIENT_ID = "your_payoneer_client_id"
-PAYONEER_CLIENT_SECRET = "your_payoneer_client_secret"
-PAYONEER_PAYMENT_URL = "https://payoneer.com/api/payment"
+# # PayPal Configuration
+# PAYPAL_CLIENT_ID="EMK2lcZJ-CE26lb-VHfBs98fjVfpJa4f_0ZWuS2MEuSdjMweN_4jHok0HQthpBArigeS1Sq1P0IByl4x"
+# PAYPAL_CLIENT_SECRET="ARhkogU_2XSMpoCiNPh3MIAVjz8Q_Sghv5aj71b3XcwfeNcbflgfGgtnIRwBtklgDgGtZEhzwQHdzBUv"
+
+# PAYPAL_CLIENT_ID = env('')
+# PAYPAL_CLIENT_SECRET = env(')
+PAYPAL_CLIENT_ID = 'EMK2lcZJ-CE26lb-VHfBs98fjVfpJa4f_0ZWuS2MEuSdjMweN_4jHok0HQthpBArigeS1Sq1P0IByl4x'
+PAYPAL_SECRET = 'ARhkogU_2XSMpoCiNPh3MIAVjz8Q_Sghv5aj71b3XcwfeNcbflgfGgtnIRwBtklgDgGtZEhzwQHdzBUv'
+PAYPAL_MODE = 'sandbox'  # Use 'live' for production
 
 # EasyPaisa Configuration
 EASYPAY_STORE_ID = "your_easypaisa_store_id"
