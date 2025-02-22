@@ -1,13 +1,31 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import axios from "axios";
-import PayPalButton from "../components/PayPalButton/PayPalButton";
+import AdvancedPayPalButton from "../components/PayPalButton/PayPalButton";
+import { ChevronDown, ChevronUp } from "lucide-react";
+
 
 const PaymentMethod = () => {
-  const [selectedMethod, setSelectedMethod] = useState("");
+  const [selectedMethod, setSelectedMethod] = useState();
+  const [orderItems, setOrderItems] = useState(null);
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const orderId = searchParams.get("order_id"); 
+
+  const producthandle = async () =>{
+    try{ 
+     const response =  await axios.get(`http://localhost:8000/orders/${orderId}/`);
+     setOrderItems(response.data.items)
+  
+    } catch (error) {
+      console.error("Payment Error:", error);
+      alert("Payment failed. Please try again.");
+    }
+}
+  useEffect(() => {
+    producthandle(); // Call the function when the component mounts
+  }, []); // Empty dependency array means this runs once on mount
+
 
   const styles = {
     container: {
@@ -66,16 +84,14 @@ const PaymentMethod = () => {
       fontSize: "16px",
     },
   };
-
   const paymentMethodSelected = (e) =>{
-      if(e === "paypal"){
-        alert('paypal');
-        return <PayPalButton />
-      }
-
-
-  
-
+    if(e === 'paypal'){
+      setSelectedMethod(e)
+    }
+    
+    
+    
+    
   }
   const handlePayment = async () => {
     if (!selectedMethod) {
@@ -112,12 +128,6 @@ const PaymentMethod = () => {
       alert("Payment failed. Please try again.");
     }
   };
-  const a = [1,23,4,5,6,3]
-  const result = a.map((item)=>{
-    return item > 2
-  })
-  console.log(result)
-
   return (
     <div style={styles.container}>
       <h2>Select Payment Method</h2>
@@ -131,11 +141,29 @@ const PaymentMethod = () => {
         >
           <img src={'https://cdn-icons-png.flaticon.com/512/6963/6963703.png'} alt="Credit Card" style={styles.icon} />
           <div style={styles.paymentDetails}>
+          
             <span>Credit/Debit Card</span>
             <span style={styles.subText}>Visa / MasterCard</span>
           </div>
+          <div className="Chevron-icon">
+          {selectedMethod === "paypal" ? <ChevronUp /> : <ChevronDown />}
+
+          </div>
       
         </div>
+        {(
+          (selectedMethod  == 'paypal') &&
+          <AdvancedPayPalButton
+          amount="20.00"
+          onSuccess={(details) => alert(`Payment successful by ${details.payer.name.given_name}`)}
+          onError={(err) => alert("Payment failed, please try again.")}
+        />
+          
+          
+          
+
+        )}
+        
       </div>
 
       {/* Other Payment Methods */}
@@ -183,4 +211,5 @@ const PaymentMethod = () => {
 };
 
 export default PaymentMethod;
+
 
